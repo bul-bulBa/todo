@@ -18,7 +18,7 @@ export class UserService {
         return user
     }
 
-    async findByemail(email: string) {
+    async findByEmail(email: string) {
         const user = this.prismaService.user.findUnique({
             where: { email },
             // include: { accounts: true }
