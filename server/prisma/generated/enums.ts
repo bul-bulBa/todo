@@ -16,3 +16,13 @@ export const AuthMethod = {
 } as const
 
 export type AuthMethod = (typeof AuthMethod)[keyof typeof AuthMethod]
+
+
+export const TokenType = {
+  VERIFICATION: 'VERIFICATION',
+  TWO_FACTOR: 'TWO_FACTOR',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  REFRESH: 'REFRESH'
+} as const
+
+export type TokenType = (typeof TokenType)[keyof typeof TokenType]

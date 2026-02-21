@@ -4,6 +4,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './auth/token/token.module';
+import { MailModule } from './libs/mail/mail.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { TokenModule } from './auth/token/token.module';
     PrismaModule,
     UserModule,
     AuthModule,
-    TokenModule
+    TokenModule,
+    MailModule
   ],
   controllers: [],
   providers: [],

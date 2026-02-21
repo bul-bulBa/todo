@@ -8,6 +8,7 @@ import { LoginDto } from './dto/login.dto';
 import bcrypt from 'bcrypt'
 import { TokenService } from './token/token.service';
 import { Response, type Request } from 'express';
+import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,8 @@ export class AuthService {
         private readonly prismaService: PrismaService,
         private readonly userService: UserService,
         private readonly config: ConfigService,
-        private readonly tokenService: TokenService
+        private readonly tokenService: TokenService,
+        private readonly emailConfirmationService: EmailConfirmationService
     ) {}
 
     async register(dto: RegisterDto, req: Request) {
@@ -31,9 +33,9 @@ export class AuthService {
             false
         )
 
-        const tokens = this.tokenService.generateTokens(newUser.id, req)
-        console.log('SERVICE TOKENS ', tokens)
-        return {user: newUser, tokens}
+        await this.emailConfirmationService.sendVerificationToken(newUser.email)
+
+        return { message: `You successfully authorized, please confirm your email. Message was sent to your email address` }
     }
 
     async login(dto: LoginDto, req: Request) {
@@ -45,7 +47,7 @@ export class AuthService {
 
         // if(!user.isVerified) throw new UnauthorizedException('Your email not verified, please check your email and confirm address')
 
-        const tokens = await this.tokenService.generateTokens(user.id, req)
+        const tokens = await this.tokenService.generateTokens(user.email, req)
         console.log('SERVICE TOKENS ', tokens)
         return {user, tokens}
     }

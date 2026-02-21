@@ -9,7 +9,6 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @UseInterceptors(setCookieToken)
   @HttpCode(HttpStatus.OK)
   @Post('register')
   async register(

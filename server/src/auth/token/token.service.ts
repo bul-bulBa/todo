@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken'
-import { User } from 'prisma/generated/client';
+import { TokenType, User } from 'prisma/generated/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -31,16 +31,17 @@ export class TokenService {
         return { accessToken, refreshToken }
     }
 
-    private async saveRefreshToken(userId, token, req: Request) {
+    private async saveRefreshToken(email, token, req: Request) {
         const ipAddress = req.headers['x-forwarded-for']?.toString() || req.ip || ''
         const userAgent = req.get('user-agent') || ''
 
         await this.prismaService.token.create({
             data: {
-                userId,
-                tokenHash: token,
+                email,
+                token,
                 userAgent,
                 ipAddress,
+                type: TokenType.REFRESH,
                 expiresIn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             }
         })
@@ -48,12 +49,12 @@ export class TokenService {
 
     async removeRefreshToken(token) {
         const existing = await this.prismaService.token.findUnique({
-            where: { tokenHash: token }
+            where: { token, type: TokenType.REFRESH }
         })
         
         if (existing) {
             await this.prismaService.token.delete({
-                where: { tokenHash: token }
+                where: { token }
             })
         }
         
