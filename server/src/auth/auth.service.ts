@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt'
 import { TokenService } from './token/token.service';
 import { Response, type Request } from 'express';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
+import { TwoFactorService } from './two-factor/two-factor.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
         private readonly userService: UserService,
         private readonly config: ConfigService,
         private readonly tokenService: TokenService,
-        private readonly emailConfirmationService: EmailConfirmationService
+        private readonly emailConfirmationService: EmailConfirmationService,
+        private readonly twoFactorService: TwoFactorService
     ) {}
 
     async register(dto: RegisterDto, req: Request) {
@@ -45,10 +47,21 @@ export class AuthService {
         const passwordConstraights = bcrypt.compare(dto.password, user.password)
         if(!passwordConstraights) throw new UnauthorizedException('Incorrect email or password, please check entered data')
 
-        // if(!user.isVerified) throw new UnauthorizedException('Your email not verified, please check your email and confirm address')
+        if(!user.isVerified) {
+            await this.emailConfirmationService.sendVerificationToken(user.email)
+            throw new UnauthorizedException('Your email not verified, please check your email and confirm address')
+        }
+
+        if(user.isTwoFactorEnabled) {
+            if(!dto.code) {
+                await this.twoFactorService.sendTwoFactorToken(user.email)
+                return { message: 'check your email box. Needed two factor authentification code' } 
+            }
+
+            await this.twoFactorService.validateTwoFactorToken(user.email, dto.code)
+        }
 
         const tokens = await this.tokenService.generateTokens(user.email, req)
-        console.log('SERVICE TOKENS ', tokens)
         return {user, tokens}
     }
 

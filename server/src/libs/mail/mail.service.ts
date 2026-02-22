@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { render } from '@react-email/components';
 import { Resend } from 'resend'
 import { ConfirmationTemplate } from './templates/confirmation.email';
+import { TwoFactorAuthTemplate } from './templates/two-factor.email';
 
 @Injectable()
 export class MailService {
@@ -17,6 +18,12 @@ export class MailService {
         const html = await render(ConfirmationTemplate({domain, token}))
 
         return this.sendEmail(email, 'Email confirmation', html)
+    }
+
+    async sendTwoFactorCode(email, code) {
+        const html = await render(TwoFactorAuthTemplate({code}))
+
+        return this.sendEmail(email, 'Two factor code', html)
     }
 
     async sendEmail(to: string, subject: string, html: string) {

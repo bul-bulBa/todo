@@ -7,6 +7,7 @@ export class setCookieToken implements NestInterceptor {
 
         return next.handle().pipe(
             map(data => {
+                if(!data.tokens) return data
                 const { accessToken, refreshToken } = data.tokens
 
                 if (accessToken)
