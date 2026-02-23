@@ -8,7 +8,7 @@ import { Suspense } from 'react'
 const RootLayout = () => (
     <>
         {/* <Header /> */}
-        <div className='m-10'>
+        <div className='h-screen w-screen'>
             <Suspense fallback={<h1>Loading...</h1>}>
                 <Outlet />
             </Suspense>
