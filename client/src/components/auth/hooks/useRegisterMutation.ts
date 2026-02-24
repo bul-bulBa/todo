@@ -1,4 +1,4 @@
-import { toastMessageHandler } from "@/lib/toastMessageHandler"
+import { toastMessageHandler } from "@/lib/toast/toastMessageHandler"
 import { authService } from "../api/auth.api"
 import type { TypeRegisterSchema } from "../schemas/register.schema"
 import { useMutation } from "@tanstack/react-query"

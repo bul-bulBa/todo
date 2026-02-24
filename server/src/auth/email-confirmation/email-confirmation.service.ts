@@ -17,6 +17,7 @@ export class EmailConfirmationService {
     ) {}
 
     async newVerification(req, dto: EmailConfirmationDto) {
+        console.log(dto)
         const existingToken = await this.prismaService.token.findUnique({
             where: { token: dto.token}
         })

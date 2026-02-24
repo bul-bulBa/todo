@@ -2,6 +2,7 @@ import { toast } from "sonner"
 
 export const toastMessageHandler = (error: Error) => {
     if(error.message) {
+        alert(error.message)
         const errorMessage = error.message
         const firstDotIndex = errorMessage.indexOf('.')
 

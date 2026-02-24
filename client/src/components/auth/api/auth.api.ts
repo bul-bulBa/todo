@@ -10,6 +10,10 @@ class AuthService {
     async login(values: TypeLoginSchema) {
         return await api.post('/auth/login', values)
     }
+
+    async confirmVerification(token: string) {
+        return await api.post('/auth/email-confirmation', { token })
+    }
 }
 
 export const authService = new AuthService

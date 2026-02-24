@@ -16,7 +16,7 @@ async function bootstrap() {
       transform: true
     })
   )
-
+ 
   app.enableCors({
     origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
     credentials: true,

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
+import { Route as AuthNewVerificationIndexRouteImport } from './routes/auth/new-verification/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,12 @@ const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
   path: '/auth/register/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthNewVerificationIndexRoute =
+  AuthNewVerificationIndexRouteImport.update({
+    id: '/auth/new-verification/',
+    path: '/auth/new-verification/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
   id: '/auth/login/',
   path: '/auth/login/',
@@ -32,30 +39,43 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
+  '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
+  '/auth/new-verification': typeof AuthNewVerificationIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
+  '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login/' | '/auth/register/'
+  fullPaths:
+    | '/'
+    | '/auth/login/'
+    | '/auth/new-verification/'
+    | '/auth/register/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/auth/register'
-  id: '__root__' | '/' | '/auth/login/' | '/auth/register/'
+  to: '/' | '/auth/login' | '/auth/new-verification' | '/auth/register'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/login/'
+    | '/auth/new-verification/'
+    | '/auth/register/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+  AuthNewVerificationIndexRoute: typeof AuthNewVerificationIndexRoute
   AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
 }
 
@@ -75,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/new-verification/': {
+      id: '/auth/new-verification/'
+      path: '/auth/new-verification'
+      fullPath: '/auth/new-verification/'
+      preLoaderRoute: typeof AuthNewVerificationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/login/': {
       id: '/auth/login/'
       path: '/auth/login'
@@ -88,6 +115,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
+  AuthNewVerificationIndexRoute: AuthNewVerificationIndexRoute,
   AuthRegisterIndexRoute: AuthRegisterIndexRoute,
 }
 export const routeTree = rootRouteImport
