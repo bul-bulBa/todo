@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { authService } from "../api/auth.api"
 import { toastMessageHandler } from "@/lib/toast/toastMessageHandler"
 import { useNavigate } from "@tanstack/react-router"
+import { useIsAuth } from "@/clientStore/isAuth"
 
 
 export const useEmailConfirmationMutation = () => {
@@ -14,7 +15,8 @@ export const useEmailConfirmationMutation = () => {
 
         onSuccess: (data: any) => {
             toastMessageHandler(data)
-            navigate({to: '/'})
+            useIsAuth.setState(() => ({isAuth: true}))
+            navigate({to: '/todo'})
         },
         onError: (error: any) => {
             toastMessageHandler(error)

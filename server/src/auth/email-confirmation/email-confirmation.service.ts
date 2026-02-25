@@ -14,32 +14,43 @@ export class EmailConfirmationService {
         private readonly userService: UserService,
         private readonly mailService: MailService,
         private readonly tokenService: TokenService
-    ) {}
+    ) { }
 
     async newVerification(req, dto: EmailConfirmationDto) {
-        console.log(dto)
         const existingToken = await this.prismaService.token.findUnique({
-            where: { token: dto.token}
+            where: { token: dto.token }
         })
 
-        if(!existingToken) throw new NotFoundException('token is undefined, check if the token correct')
-        
+        if (!existingToken) throw new NotFoundException('token is undefined, check if the token correct')
+
         const hasExpired = new Date(existingToken.expiresIn) < new Date()
 
-        if(hasExpired) throw new BadRequestException('confirmation token is expired, please send new request')
+        if (hasExpired) throw new BadRequestException('confirmation token is expired, please send new request')
 
-        const existingUser = await this.userService.findByEmail( existingToken.email )
+        const existingUser = await this.userService.findByEmail(existingToken.email)
 
-        if(!existingUser) throw new NotFoundException('user is undefined')
+        if (!existingUser) throw new NotFoundException('user is undefined')
 
         await this.prismaService.user.update({
-            where: { id: existingUser.id},
+            where: { id: existingUser.id },
             data: { isVerified: true }
         })
 
-        await this.prismaService.token.delete({
-            where: { id: existingToken.id}
+        const token = await this.prismaService.token.findUnique({
+            where: { id: existingToken.id }
         })
+        
+        try {
+            await this.prismaService.token.delete({
+                where: { id: existingToken.id }
+            })
+        } catch (error) {
+            if (error.code === 'P2025') {
+                // ignore
+            } else {
+                throw error;
+            }
+        }
 
         const tokens = await this.tokenService.generateTokens(existingUser.id, req)
 
@@ -62,7 +73,7 @@ export class EmailConfirmationService {
             where: { email, type: TokenType.VERIFICATION }
         })
 
-        if(existingToken) {
+        if (existingToken) {
             await this.prismaService.token.delete({
                 where: { id: existingToken.id, type: TokenType.VERIFICATION }
             })
@@ -70,7 +81,7 @@ export class EmailConfirmationService {
 
         const verificationToken = await this.prismaService.token.create({
             data: {
-                email, 
+                email,
                 token,
                 expiresIn,
                 type: TokenType.VERIFICATION,

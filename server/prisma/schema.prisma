@@ -28,23 +28,6 @@ model User {
   @@map("users")
 }
 
-model Token {
-  id String @id @default(uuid())
-
-  email String 
-  token String @unique @map("token_hash")
-  expiresIn DateTime @map("expires_in")
-
-  type TokenType
-
-  ipAddress String? @map("ip_address")
-  userAgent String? @map("user_agent")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@map("tokens")
-}
-
 // model Account {
 //   id String @id @default(uuid())
 
@@ -64,6 +47,23 @@ model Token {
 //   @@map("accounts")
 // }
 
+model Token {
+  id String @id @default(uuid())
+
+  email String 
+  token String @unique @map("token")
+  expiresIn DateTime @map("expires_in")
+
+  type TokenType
+
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("tokens")
+}
+
 model Todo {
   id String @id @default(uuid())
 
@@ -72,7 +72,7 @@ model Todo {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("userId")
 
   @@map("todos")

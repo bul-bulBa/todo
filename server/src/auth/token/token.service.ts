@@ -32,32 +32,36 @@ export class TokenService {
     }
 
     private async saveRefreshToken(email, token, req: Request) {
-        const ipAddress = req.headers['x-forwarded-for']?.toString() || req.ip || ''
-        const userAgent = req.get('user-agent') || ''
+        try {
+            const ipAddress = req.headers['x-forwarded-for']?.toString() || req.ip || ''
+            const userAgent = req.get('user-agent') || ''
 
-        await this.prismaService.token.create({
-            data: {
-                email,
-                token,
-                userAgent,
-                ipAddress,
-                type: TokenType.REFRESH,
-                expiresIn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-            }
-        })
+            await this.prismaService.token.create({
+                data: {
+                    email,
+                    token,
+                    userAgent,
+                    ipAddress,
+                    type: TokenType.REFRESH,
+                    expiresIn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                }
+            })
+        } catch(e) {
+            // ignore
+        }
     }
 
     async removeRefreshToken(token) {
         const existing = await this.prismaService.token.findUnique({
             where: { token, type: TokenType.REFRESH }
         })
-        
+
         if (existing) {
             await this.prismaService.token.delete({
                 where: { token }
             })
         }
-        
+
         return true
     }
 }

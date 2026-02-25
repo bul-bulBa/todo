@@ -1,9 +1,10 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { createRootRoute, createRootRouteWithContext, Link, Outlet, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 // import Header from '@/components/Header'
 import { Suspense } from 'react'
-
+import { ToastProvider } from '../lib/toast/toastMessageProvider'
+import { useIsAuth } from '@/clientStore/isAuth'
 
 const RootLayout = () => (
     <>
@@ -13,9 +14,24 @@ const RootLayout = () => (
                 <Outlet />
             </Suspense>
         </div>
+        <ToastProvider />
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools initialIsOpen={false} />
     </>
 )
 
-export const Route = createRootRoute({ component: RootLayout })
+export const Route = createRootRoute({
+    component: RootLayout,
+    beforeLoad: ({ location }) => {
+        const { isAuth } = useIsAuth.getState()
+        const path = location.pathname
+        console.log(isAuth)
+        if (isAuth && path.startsWith('/auth') || path === '/') 
+            return redirect({ to: '/todo' })
+
+        if (!isAuth && path.startsWith('/todo') || path === '/') 
+            return redirect({ to: '/auth/register' })
+
+        return null
+    }
+})

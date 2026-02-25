@@ -4,6 +4,7 @@ import type { TypeLoginSchema } from "../schemas/login.schema"
 import { toastMessageHandler } from "@/lib/toast/toastMessageHandler"
 import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
+import { useIsAuth } from "@/clientStore/isAuth"
 
 
 export const useLoginMutation = () => {
@@ -14,12 +15,9 @@ export const useLoginMutation = () => {
         mutationFn: (values: TypeLoginSchema) => authService.login(values),
 
         onSuccess: (data: any) => {
-            if (data.message) {
-                toastMessageHandler(data)
-            } else {
-                toast.success('successfull authorization')
-                navigate({ to: '/' })
-            }
+            toast.success('successfull authorization')
+            useIsAuth.setState(() => ({isAuth: true}))
+            navigate({ to: '/todo' })
         },
         onError: (error: any) => {
             toastMessageHandler(error)
