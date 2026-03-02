@@ -1,9 +1,9 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { RegisterDto } from './dto/register.dto';
-import { AuthMethod } from 'prisma/generated/enums';
+import { AuthMethod, TokenType } from 'prisma/generated/enums';
 import { LoginDto } from './dto/login.dto';
 import bcrypt from 'bcrypt'
 import { TokenService } from './token/token.service';
@@ -45,11 +45,11 @@ export class AuthService {
         if(!user) throw new NotFoundException('This user is not exist')
 
         const passwordConstraights = bcrypt.compare(dto.password, user.password)
-        if(!passwordConstraights) throw new UnauthorizedException('Incorrect email or password, please check entered data')
+        if(!passwordConstraights) throw new BadRequestException('Incorrect email or password, please check entered data')
 
         if(!user.isVerified) {
             await this.emailConfirmationService.sendVerificationToken(user.email)
-            throw new UnauthorizedException('Your email not verified, please check your email and confirm address')
+            throw new BadRequestException('Your email not verified, please check your email and confirm address')
         }
 
         if(user.isTwoFactorEnabled) {
@@ -74,4 +74,21 @@ export class AuthService {
         return res.json({ message: true })
     }
 
+    async refresh(req: Request) {
+        console.log('REFRESH')
+        const oldRefreshToken = req.cookies['refreshToken']
+        const existingToken = await this.prismaService.token.findFirst({
+            where: { token: oldRefreshToken, type: TokenType.REFRESH}
+        })
+
+        if(!existingToken) throw new UnauthorizedException("Refresh token is undefined")
+        
+        const hasExpired = new Date(existingToken?.expiresIn) < new Date()
+        if(hasExpired) throw new UnauthorizedException("Refresh token is expired")
+
+        await this.tokenService.removeRefreshToken(existingToken.token)
+        const { accessToken, refreshToken } = await this.tokenService.generateTokens(existingToken.id, req)
+
+        return {accessToken, refreshToken}
+    }
 }

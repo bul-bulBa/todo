@@ -36,4 +36,12 @@ export class AuthController {
   ) {
     return this.authService.logout(req, res)
   }
+
+  @UseInterceptors(setCookieToken)
+  @Post('refresh')
+  async refresh(
+    @Req() req: Request
+  ) {
+    return this.authService.refresh(req)
+  }
 }

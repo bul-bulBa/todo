@@ -1,14 +1,18 @@
+import { useTodoQuery } from "../hooks/useTodoQuery"
 import TodoItem from "./TodoItem"
 
 
 const TodoList = () => {
 
-    const arr = ['1', '2', '3', '4']
+    const { todos, isTodoLoading } = useTodoQuery()
+
+    // if(!todos) return null
 
     return (
         <>
-            {arr.map((item, index) => (
-                <div className="m-2" key={index}>
+            {isTodoLoading && <div>...Loading</div>}
+            {todos?.map(t => (
+                <div className="m-2" key={t.id}>
                     <TodoItem />
                 </div>
             ))}

@@ -13,7 +13,7 @@ export const useIsAuth = create<IsAuth>()(
             setAuth: value => set({ isAuth: value }),
         }),
         {
-            name: 'auth-storage',
+            name: 'auth',
         }
     )
 )

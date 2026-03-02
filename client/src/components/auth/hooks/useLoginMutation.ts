@@ -15,9 +15,11 @@ export const useLoginMutation = () => {
         mutationFn: (values: TypeLoginSchema) => authService.login(values),
 
         onSuccess: (data: any) => {
-            toast.success('successfull authorization')
-            useIsAuth.setState(() => ({isAuth: true}))
-            navigate({ to: '/todo' })
+            if (data.user) {
+                toast.success('successfull authorization')
+                useIsAuth.setState(() => ({ isAuth: true }))
+                navigate({ to: '/todo' })
+            }
         },
         onError: (error: any) => {
             toastMessageHandler(error)

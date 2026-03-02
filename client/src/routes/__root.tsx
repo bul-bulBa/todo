@@ -26,7 +26,7 @@ export const Route = createRootRoute({
         const { isAuth } = useIsAuth.getState()
         const path = location.pathname
         console.log(isAuth)
-        if (isAuth && path.startsWith('/auth') || path === '/') 
+        if (isAuth && path.includes('/auth/login') || path.includes('/auth/register')) 
             return redirect({ to: '/todo' })
 
         if (!isAuth && path.startsWith('/todo') || path === '/') 

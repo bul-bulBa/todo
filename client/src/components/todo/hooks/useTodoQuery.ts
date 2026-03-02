@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query"
+import { todoService } from "../api/todo.api"
+import type { Todo } from "../types/todoType"
 
 
 export const useTodoQuery = () => {
 
-    const { data, isLoading } = useQuery({
+    const { data: todos, isLoading: isTodoLoading } = useQuery<Todo[]>({
         queryKey: ['todo-query'],
-        // queryFn: () => 
+        queryFn: todoService.get
     })
+
+    return {todos, isTodoLoading}
 }
