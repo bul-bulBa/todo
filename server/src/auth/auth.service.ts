@@ -61,7 +61,7 @@ export class AuthService {
             await this.twoFactorService.validateTwoFactorToken(user.email, dto.code)
         }
 
-        const tokens = await this.tokenService.generateTokens(user.email, req)
+        const tokens = await this.tokenService.generateTokens(user.id, req)
         return {user, tokens}
     }
 

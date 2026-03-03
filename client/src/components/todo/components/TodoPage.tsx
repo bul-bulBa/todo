@@ -1,10 +1,14 @@
+import { useMeQuery } from "../hooks/useMeQuery"
+import CreateTodo from "./CreateTodo"
 import TodoList from "./TodoList"
 
 const TodoPage = () => {
 
+    const { me, isLoadingMe} = useMeQuery()
+
     return (
         <div>
-            <div>create</div>
+            <CreateTodo />
             <TodoList />
         </div>
     )

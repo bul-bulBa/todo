@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Post, Req, Res, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { setCookieToken } from 'src/libs/interceptors/setCookieToken.interceptor';
 import type { Response, Request } from 'express';
 import { LoginDto } from './dto/login.dto';
+import { Authorized } from './decorators/authorized.decorator';
+import { Authorization } from './decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -43,5 +45,14 @@ export class AuthController {
     @Req() req: Request
   ) {
     return this.authService.refresh(req)
+  }
+
+  @Authorization()
+  @Get('me')
+  async me(
+    @Authorized('id') id: string,
+    @Req() req
+  ) {
+    return req.user.email
   }
 }

@@ -19,7 +19,6 @@ export class setCookieToken implements NestInterceptor {
                         { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
                 const { tokens, ...other } = data
-
                 return other
             })
         )

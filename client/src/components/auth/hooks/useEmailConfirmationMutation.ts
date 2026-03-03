@@ -14,8 +14,8 @@ export const useEmailConfirmationMutation = () => {
             authService.confirmVerification(token),
 
         onSuccess: (data: any) => {
-            toastMessageHandler(data)
-            useIsAuth.setState(() => ({isAuth: true}))
+            console.log(data)
+            toastMessageHandler(data.data.message)
             navigate({to: '/todo'})
         },
         onError: (error: any) => {

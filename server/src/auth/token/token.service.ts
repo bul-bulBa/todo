@@ -13,13 +13,13 @@ export class TokenService {
     ) { }
 
     accessVerify(token: string): string {
-        const id = jwt.verify(token, this.config.getOrThrow<string>('JWT_ACCESS_SECRET'))
+        const { id } = jwt.verify(token, this.config.getOrThrow<string>('JWT_ACCESS_SECRET'))
         if (!id) throw new UnauthorizedException('You are unauthorized')
         return id
     }
 
     refreshVerify(token: string): string {
-        const id = jwt.verify(token, this.config.getOrThrow<string>('JWT_REFRESH_SECRET'))
+        const { id } = jwt.verify(token, this.config.getOrThrow<string>('JWT_REFRESH_SECRET'))
         if (!id) throw new UnauthorizedException('You are unauthorized')
         return id
     }

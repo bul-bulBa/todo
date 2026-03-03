@@ -9,7 +9,8 @@ async function bootstrap() {
 
   const config = app.get(ConfigService)
 
-  app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')))
+  // app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')))
+  app.use(cookieParser())
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,8 +20,7 @@ async function bootstrap() {
  
   app.enableCors({
     origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
-    credentials: true,
-    exposedHeaders: ['set-cookie']
+    credentials: true
   }) 
 
   await app.listen(config.getOrThrow<number>('PORT') ?? 3000);

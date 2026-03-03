@@ -10,9 +10,9 @@ const RootLayout = () => (
     <>
         {/* <Header /> */}
         <div className='h-screen w-screen'>
-            <Suspense fallback={<h1>Loading...</h1>}>
+            {/* <Suspense fallback={<h1>Loading...</h1>}> */}
                 <Outlet />
-            </Suspense>
+            {/* </Suspense> */}
         </div>
         <ToastProvider />
         <TanStackRouterDevtools position="bottom-left" />
@@ -22,16 +22,16 @@ const RootLayout = () => (
 
 export const Route = createRootRoute({
     component: RootLayout,
-    beforeLoad: ({ location }) => {
-        const { isAuth } = useIsAuth.getState()
-        const path = location.pathname
-        console.log(isAuth)
-        if (isAuth && path.includes('/auth/login') || path.includes('/auth/register')) 
-            return redirect({ to: '/todo' })
+    // beforeLoad: ({ location }) => {
+    //     const { isAuth } = useIsAuth.getState()
+    //     const IsAuthPath = location.pathname.includes('/auth/')
 
-        if (!isAuth && path.startsWith('/todo') || path === '/') 
-            return redirect({ to: '/auth/register' })
+    //     console.log(isAuth)
 
-        return null
-    }
+    //     // if(IsAuthPath && isAuth) return redirect({to: '/todo'})
+
+    //     // if(!isAuth && !IsAuthPath) return redirect({ to: '/auth/register'})
+
+    //     return null
+    // }
 })

@@ -5,9 +5,9 @@ import type { Todo } from "../types/todoType"
 
 export const useTodoQuery = () => {
 
-    const { data: todos, isLoading: isTodoLoading } = useQuery<Todo[]>({
+    const { data: todos, isLoading: isTodoLoading } = useQuery({
         queryKey: ['todo-query'],
-        queryFn: todoService.get
+        queryFn: todoService.getTodo
     })
 
     return {todos, isTodoLoading}

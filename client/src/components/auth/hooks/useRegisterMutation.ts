@@ -13,8 +13,7 @@ export const useRegisterMutation = () => {
         mutationFn: (values: TypeRegisterSchema) => authService.register(values),
 
         onSuccess(data: any) {
-            useIsAuth.setState(() => ({isAuth: true}))
-            toastMessageHandler(data)
+            toastMessageHandler(data.data.message)
         },
 
         onError(error: any) {
