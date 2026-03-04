@@ -16,7 +16,7 @@ export const useLoginMutation = () => {
 
         onSuccess: (data: any) => {
             console.log(data)
-            if (data.data.user) {
+            if (data.user) {
                 toast.success('successfull authorization')
                 useIsAuth.setState(() => ({ isAuth: true }))
                 navigate({ to: '/todo' })

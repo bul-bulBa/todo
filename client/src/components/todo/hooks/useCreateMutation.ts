@@ -9,8 +9,7 @@ export const useCreateMutation = () => {
     const {mutate: createTodo, isPending: isPendingTodo} = useMutation({
         mutationKey: ['mutation_todo'],
         mutationFn: todoService.create,
-        onSuccess: (data) => {
-            const todo = data
+        onSuccess: (todo) => {
             const previousData = queryClient.getQueryData<Todo[]>(['todo-query']) || []
             console.log('MUTATION', previousData, todo)
             queryClient.setQueryData(['todo-query'], [...previousData, todo])

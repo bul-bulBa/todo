@@ -689,7 +689,8 @@ export const TokenScalarFieldEnum = {
   type: 'type',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  userId: 'userId'
 } as const
 
 export type TokenScalarFieldEnum = (typeof TokenScalarFieldEnum)[keyof typeof TokenScalarFieldEnum]
@@ -698,6 +699,8 @@ export type TokenScalarFieldEnum = (typeof TokenScalarFieldEnum)[keyof typeof To
 export const TodoScalarFieldEnum = {
   id: 'id',
   text: 'text',
+  complete: 'complete',
+  deadline: 'deadline',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'

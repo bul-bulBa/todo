@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { Authorization } from 'src/auth/decorators/auth.decorator';
 import { Authorized } from 'src/auth/decorators/authorized.decorator';
 import { createTodoDto } from './dto/create_todo.dto';
+import { PatchTodoDto } from './dto/patch_todo.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -18,8 +19,20 @@ export class TodoController {
   @Authorization()
   create(
     @Authorized('id') id: string,
-    @Body() { text }: createTodoDto
+    @Body() dto: createTodoDto
   ) {
-    return this.todoService.create(id, text)
+    return this.todoService.create(id, dto)
+  }
+
+  @Patch()
+  patch(
+    @Body() dto: PatchTodoDto
+  ) {
+    return this.todoService.patch(dto)
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.todoService.delete(id)
   }
 }

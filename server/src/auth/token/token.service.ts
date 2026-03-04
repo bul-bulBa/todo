@@ -1,15 +1,17 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken'
 import { TokenType, User } from 'prisma/generated/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class TokenService {
     constructor(
         private readonly config: ConfigService,
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        private readonly userService: UserService
     ) { }
 
     accessVerify(token: string): string {
@@ -36,6 +38,9 @@ export class TokenService {
             const ipAddress = req.headers['x-forwarded-for']?.toString() || req.ip || ''
             const userAgent = req.get('user-agent') || ''
 
+            const user = await this.userService.findByEmail(email)
+            if(!user) throw new BadRequestException('user with this email does not exist, please check if the email is correct')
+
             await this.prismaService.token.create({
                 data: {
                     email,
@@ -43,7 +48,8 @@ export class TokenService {
                     userAgent,
                     ipAddress,
                     type: TokenType.REFRESH,
-                    expiresIn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                    expiresIn: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                    userId: user.id
                 }
             })
         } catch(e) {

@@ -2,6 +2,8 @@
 export type Todo = {
     id: string,
     text: string,
+    complete: Boolean,
+    deadline?: Date,
     createdAt: Date,
     updatedAt: Date,
     userId: string

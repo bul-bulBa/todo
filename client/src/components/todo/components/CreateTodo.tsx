@@ -12,7 +12,7 @@ const CreateTodo = () => {
         <div>
             {isPendingTodo && <div>...loading</div>}
             <Textarea placeholder="Type your todo here" onChange={(e) => text.current = e.target.value}/>
-            <Button onClick={() => createTodo(text.current)}></Button>
+            <Button onClick={() => createTodo(text.current)}>Create</Button>
         </div>
     )
 }

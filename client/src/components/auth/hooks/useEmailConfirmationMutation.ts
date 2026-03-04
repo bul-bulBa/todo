@@ -15,7 +15,7 @@ export const useEmailConfirmationMutation = () => {
 
         onSuccess: (data: any) => {
             console.log(data)
-            toastMessageHandler(data.data.message)
+            toastMessageHandler(data.message)
             navigate({to: '/todo'})
         },
         onError: (error: any) => {

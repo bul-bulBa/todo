@@ -22,8 +22,10 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
 
-  todos    Todo[]
+  todos Todo[]
   // accounts Account[]
+
+  tokens Token[]
 
   @@map("users")
 }
@@ -50,8 +52,8 @@ model User {
 model Token {
   id String @id @default(uuid())
 
-  email String 
-  token String @unique @map("token")
+  email     String
+  token     String   @unique @map("token")
   expiresIn DateTime @map("expires_in")
 
   type TokenType
@@ -61,13 +63,18 @@ model Token {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("userId")
+
   @@map("tokens")
 }
 
 model Todo {
   id String @id @default(uuid())
 
-  text String
+  text     String
+  complete Boolean @default(false)
+  deadline DateTime?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")

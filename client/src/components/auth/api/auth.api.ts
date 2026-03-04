@@ -3,17 +3,14 @@ import type { TypeRegisterSchema } from "../schemas/register.schema";
 import type { TypeLoginSchema } from "../schemas/login.schema";
 
 class AuthService {
-    async register(body: TypeRegisterSchema, recaptcha?: string) {
-        return await api.post('/auth/register', body)
-    }
+    register = (body: TypeRegisterSchema, recaptcha?: string) => 
+        api.post('/auth/register', body).then(res => res.data)
 
-    async login(values: TypeLoginSchema) {
-        return await api.post('/auth/login', values)
-    }
+    login = (values: TypeLoginSchema) => 
+        api.post('/auth/login', values).then(res => res.data)
 
-    async confirmVerification(token: string) {
-        return await api.post('/auth/email-confirmation', { token })
-    }
+    confirmVerification = (token: string) => 
+        api.post('/auth/email-confirmation', { token }).then(res => res.data)
 }
 
 export const authService = new AuthService

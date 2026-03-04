@@ -39,7 +39,7 @@ export class EmailConfirmationService {
         const token = await this.prismaService.token.findUnique({
             where: { id: existingToken.id }
         })
-        
+
         try {
             await this.prismaService.token.delete({
                 where: { id: existingToken.id }
@@ -54,7 +54,7 @@ export class EmailConfirmationService {
 
         const tokens = await this.tokenService.generateTokens(existingUser.id, req)
 
-        return { tokens }
+        return { message: true, tokens }
     }
 
     async sendVerificationToken(email: string) {
@@ -79,12 +79,16 @@ export class EmailConfirmationService {
             })
         }
 
+        const user = await this.userService.findByEmail(email)
+        if (!user) throw new BadRequestException('user with this email does not exist, please check if the email is correct')
+
         const verificationToken = await this.prismaService.token.create({
             data: {
                 email,
                 token,
                 expiresIn,
                 type: TokenType.VERIFICATION,
+                userId: user.id
             }
         })
 

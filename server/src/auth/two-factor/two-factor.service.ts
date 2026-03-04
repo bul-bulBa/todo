@@ -4,6 +4,7 @@ import { MailService } from 'src/libs/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TokenService } from '../token/token.service';
 import { TokenType } from 'prisma/generated/enums';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class TwoFactorService {
@@ -11,7 +12,8 @@ export class TwoFactorService {
         private readonly prismaService: PrismaService,
         private readonly config: ConfigService,
         private readonly mailService: MailService,
-        private readonly tokenService: TokenService
+        private readonly tokenService: TokenService,
+        private readonly userService: UserService
     ) {}
 
     async validateTwoFactorToken(email: string, code: string) {
@@ -49,18 +51,22 @@ export class TwoFactorService {
             where: { email, type: TokenType.TWO_FACTOR }
         })
 
+        const user = await this.userService.findByEmail(email)
+        if(!user) throw new BadRequestException('user with this email does not exist, please check if the email is correct')
+
         if(existingToken) {
             await this.prismaService.token.delete({
                 where: { id: existingToken.id }
             })
         }
 
-        const twoFactorToken = await this.prismaService.token.create({
+        const twoFactorToken = await this.prismaService.token.create({ 
             data: {
                 email,
                 token,
                 expiresIn,
-                type: TokenType.TWO_FACTOR
+                type: TokenType.TWO_FACTOR,
+                userId: user.id
             }
         })
 
