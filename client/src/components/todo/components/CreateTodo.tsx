@@ -2,17 +2,26 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useRef } from "react"
 import { useCreateMutation } from "../hooks/useCreateMutation"
+import { DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 const CreateTodo = () => {
     const text = useRef('')
 
-    const {createTodo, isPendingTodo} = useCreateMutation()
+    const { createTodo, isPendingTodo } = useCreateMutation()
 
     return (
-        <div>
-            {isPendingTodo && <div>...loading</div>}
-            <Textarea placeholder="Type your todo here" onChange={(e) => text.current = e.target.value}/>
-            <Button onClick={() => createTodo(text.current)}>Create</Button>
+        <div className="w-[80vw] h-50vh] flex justify-center items-center">
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create new todo</DialogTitle>
+                </DialogHeader>
+                {/* {isPendingTodo && <div>...loading</div>} */}
+                <Textarea placeholder="Type your todo here"
+                    onChange={(e) => text.current = e.target.value} />
+                <DialogClose>
+                    <Button onClick={() => createTodo(text.current)}>Create</Button>
+                </DialogClose>
+            </DialogContent>
         </div>
     )
 }

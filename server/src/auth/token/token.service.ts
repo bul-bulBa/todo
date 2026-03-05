@@ -33,17 +33,17 @@ export class TokenService {
         return { accessToken, refreshToken }
     }
 
-    private async saveRefreshToken(email, token, req: Request) {
+    private async saveRefreshToken(Id, token, req: Request) {
         try {
             const ipAddress = req.headers['x-forwarded-for']?.toString() || req.ip || ''
             const userAgent = req.get('user-agent') || ''
 
-            const user = await this.userService.findByEmail(email)
-            if(!user) throw new BadRequestException('user with this email does not exist, please check if the email is correct')
-
+            const user = await this.userService.findById(Id)
+            if (!user) throw new BadRequestException('user with this email does not exist, please check if the email is correct')
+                
             await this.prismaService.token.create({
                 data: {
-                    email,
+                    email: user.email,
                     token,
                     userAgent,
                     ipAddress,
@@ -52,8 +52,8 @@ export class TokenService {
                     userId: user.id
                 }
             })
-        } catch(e) {
-            // ignore
+        } catch (e) {
+            // ignore 
         }
     }
 

@@ -8,10 +8,10 @@ class TodoService {
         api.post('/todo', { text }).then(res => res.data)
 
     update = (data: any): Promise<Todo> =>
-        api.patch('/todo', data)
+        api.patch('/todo', data).then(res => res.data)
 
     delete = (id: string): Promise<boolean> =>
-        api.delete(`/todo/${id}`)
+        api.delete(`/todo/${id}`).then(res => res.data)
 
     async getMe() {
         return api.get('/auth/me').then(res => res.data)
