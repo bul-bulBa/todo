@@ -3,18 +3,24 @@ import { useDeleteMutation } from "../hooks/useDeleteMutation"
 import { useUpdateMutation } from "../hooks/userUpdateMutation"
 import type { Todo } from "../types/todoType"
 import { CircleCheckBig, Circle, Delete } from 'lucide-react'
+import { useUpdate } from "@/clientStore/useUpdate"
+import type React from "react"
 
 type Props = {
     todo: Todo
 }
 
 const TodoItem = ({ todo }: Props) => {
-
+    const { setTodo } = useUpdate()
     const { deleteTodo, isDeletePending } = useDeleteMutation()
     const { update, isUpdatePending } = useUpdateMutation()
 
     return (
-        <div className="grid grid-cols-3 p-3 border rounded-xl">
+        <div className="grid grid-cols-3 p-3 border rounded-xl"
+        onContextMenu={(e) => {
+            e.preventDefault()
+            setTodo(todo.id)
+        }}>
 
             <div>{todo.complete
                 ? <CircleCheckBig onClick={() =>

@@ -10,7 +10,7 @@ const CreateTodo = () => {
     const { createTodo, isPendingTodo } = useCreateMutation()
 
     return (
-        <div className="w-[80vw] h-50vh] flex justify-center items-center">
+        <div className="">
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create new todo</DialogTitle>
