@@ -16,7 +16,7 @@ import { LoginSchema, type TypeLoginSchema } from "../schemas/login.schema"
 const LoginForm = () => {
     // const { theme } = useTheme()
     const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-
+    const [isShowTwoFactor, setIsShowTwoFactor] = useState<boolean>(false)
     const form = useForm<TypeLoginSchema>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -25,7 +25,7 @@ const LoginForm = () => {
         }
     })
 
-    const { login, isLoadingLogin } = useLoginMutation()
+    const { login, isLoadingLogin } = useLoginMutation(setIsShowTwoFactor)
 
     const onSubmit = (values: TypeLoginSchema) => {
         // if (recaptchaValue) register({ values, recaptcha: recaptchaValue })
@@ -43,23 +43,38 @@ const LoginForm = () => {
             <form onSubmit={form.handleSubmit(onSubmit)}
                 className="grid gap-2 space-y-2">
 
-                <FieldGroup>
-                    <Field>
-                        <FieldLabel htmlFor="email">Email</FieldLabel>
-                        <Input
-                            disabled={isLoadingLogin}
-                            {...form.register('email')}
-                            placeholder="example@gmail.com" />
-                    </Field>
-                    <Field>
-                        <FieldLabel htmlFor="password">Password</FieldLabel>
-                        <Input
-                            disabled={isLoadingLogin}
-                            {...form.register('password')}
-                            minLength={6}
-                            placeholder="******" />
-                    </Field>
-                </FieldGroup>
+                {isShowTwoFactor &&
+                    <FieldGroup>
+                        <Field>
+                            <FieldLabel htmlFor="code">Code</FieldLabel>
+                            <Input
+                                disabled={isLoadingLogin}
+                                {...form.register('code')}
+                                minLength={6}
+                                placeholder="******" />
+                        </Field>
+                    </FieldGroup>
+                }
+
+                {!isShowTwoFactor &&
+                    <FieldGroup>
+                        <Field>
+                            <FieldLabel htmlFor="email">Email</FieldLabel>
+                            <Input
+                                disabled={isLoadingLogin}
+                                {...form.register('email')}
+                                placeholder="example@gmail.com" />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="password">Password</FieldLabel>
+                            <Input
+                                disabled={isLoadingLogin}
+                                {...form.register('password')}
+                                minLength={6}
+                                placeholder="******" />
+                        </Field>
+                    </FieldGroup>
+                }
                 <Button type='submit'>Sign in</Button>
             </form>
         </AuthWrapper>

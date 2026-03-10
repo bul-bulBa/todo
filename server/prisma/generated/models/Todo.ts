@@ -199,6 +199,7 @@ export type TodoWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  checkList?: Prisma.ChecklistItemListRelationFilter
 }
 
 export type TodoOrderByWithRelationInput = {
@@ -210,6 +211,7 @@ export type TodoOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  checkList?: Prisma.ChecklistItemOrderByRelationAggregateInput
 }
 
 export type TodoWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +226,7 @@ export type TodoWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  checkList?: Prisma.ChecklistItemListRelationFilter
 }, "id">
 
 export type TodoOrderByWithAggregationInput = {
@@ -260,6 +263,7 @@ export type TodoCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutTodosInput
+  checkList?: Prisma.ChecklistItemCreateNestedManyWithoutTodoInput
 }
 
 export type TodoUncheckedCreateInput = {
@@ -270,6 +274,7 @@ export type TodoUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  checkList?: Prisma.ChecklistItemUncheckedCreateNestedManyWithoutTodoInput
 }
 
 export type TodoUpdateInput = {
@@ -280,6 +285,7 @@ export type TodoUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTodosNestedInput
+  checkList?: Prisma.ChecklistItemUpdateManyWithoutTodoNestedInput
 }
 
 export type TodoUncheckedUpdateInput = {
@@ -290,6 +296,7 @@ export type TodoUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  checkList?: Prisma.ChecklistItemUncheckedUpdateManyWithoutTodoNestedInput
 }
 
 export type TodoCreateManyInput = {
@@ -361,6 +368,11 @@ export type TodoMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
 }
 
+export type TodoScalarRelationFilter = {
+  is?: Prisma.TodoWhereInput
+  isNot?: Prisma.TodoWhereInput
+}
+
 export type TodoCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.TodoCreateWithoutUserInput, Prisma.TodoUncheckedCreateWithoutUserInput> | Prisma.TodoCreateWithoutUserInput[] | Prisma.TodoUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.TodoCreateOrConnectWithoutUserInput | Prisma.TodoCreateOrConnectWithoutUserInput[]
@@ -407,6 +419,20 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type TodoCreateNestedOneWithoutCheckListInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutCheckListInput, Prisma.TodoUncheckedCreateWithoutCheckListInput>
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutCheckListInput
+  connect?: Prisma.TodoWhereUniqueInput
+}
+
+export type TodoUpdateOneRequiredWithoutCheckListNestedInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutCheckListInput, Prisma.TodoUncheckedCreateWithoutCheckListInput>
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutCheckListInput
+  upsert?: Prisma.TodoUpsertWithoutCheckListInput
+  connect?: Prisma.TodoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TodoUpdateToOneWithWhereWithoutCheckListInput, Prisma.TodoUpdateWithoutCheckListInput>, Prisma.TodoUncheckedUpdateWithoutCheckListInput>
+}
+
 export type TodoCreateWithoutUserInput = {
   id?: string
   text: string
@@ -414,6 +440,7 @@ export type TodoCreateWithoutUserInput = {
   deadline?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  checkList?: Prisma.ChecklistItemCreateNestedManyWithoutTodoInput
 }
 
 export type TodoUncheckedCreateWithoutUserInput = {
@@ -423,6 +450,7 @@ export type TodoUncheckedCreateWithoutUserInput = {
   deadline?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  checkList?: Prisma.ChecklistItemUncheckedCreateNestedManyWithoutTodoInput
 }
 
 export type TodoCreateOrConnectWithoutUserInput = {
@@ -464,6 +492,62 @@ export type TodoScalarWhereInput = {
   userId?: Prisma.StringFilter<"Todo"> | string
 }
 
+export type TodoCreateWithoutCheckListInput = {
+  id?: string
+  text: string
+  complete?: boolean
+  deadline?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutTodosInput
+}
+
+export type TodoUncheckedCreateWithoutCheckListInput = {
+  id?: string
+  text: string
+  complete?: boolean
+  deadline?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+}
+
+export type TodoCreateOrConnectWithoutCheckListInput = {
+  where: Prisma.TodoWhereUniqueInput
+  create: Prisma.XOR<Prisma.TodoCreateWithoutCheckListInput, Prisma.TodoUncheckedCreateWithoutCheckListInput>
+}
+
+export type TodoUpsertWithoutCheckListInput = {
+  update: Prisma.XOR<Prisma.TodoUpdateWithoutCheckListInput, Prisma.TodoUncheckedUpdateWithoutCheckListInput>
+  create: Prisma.XOR<Prisma.TodoCreateWithoutCheckListInput, Prisma.TodoUncheckedCreateWithoutCheckListInput>
+  where?: Prisma.TodoWhereInput
+}
+
+export type TodoUpdateToOneWithWhereWithoutCheckListInput = {
+  where?: Prisma.TodoWhereInput
+  data: Prisma.XOR<Prisma.TodoUpdateWithoutCheckListInput, Prisma.TodoUncheckedUpdateWithoutCheckListInput>
+}
+
+export type TodoUpdateWithoutCheckListInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  complete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutTodosNestedInput
+}
+
+export type TodoUncheckedUpdateWithoutCheckListInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  complete?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type TodoCreateManyUserInput = {
   id?: string
   text: string
@@ -480,6 +564,7 @@ export type TodoUpdateWithoutUserInput = {
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkList?: Prisma.ChecklistItemUpdateManyWithoutTodoNestedInput
 }
 
 export type TodoUncheckedUpdateWithoutUserInput = {
@@ -489,6 +574,7 @@ export type TodoUncheckedUpdateWithoutUserInput = {
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkList?: Prisma.ChecklistItemUncheckedUpdateManyWithoutTodoNestedInput
 }
 
 export type TodoUncheckedUpdateManyWithoutUserInput = {
@@ -501,6 +587,35 @@ export type TodoUncheckedUpdateManyWithoutUserInput = {
 }
 
 
+/**
+ * Count Type TodoCountOutputType
+ */
+
+export type TodoCountOutputType = {
+  checkList: number
+}
+
+export type TodoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  checkList?: boolean | TodoCountOutputTypeCountCheckListArgs
+}
+
+/**
+ * TodoCountOutputType without action
+ */
+export type TodoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TodoCountOutputType
+   */
+  select?: Prisma.TodoCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TodoCountOutputType without action
+ */
+export type TodoCountOutputTypeCountCheckListArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChecklistItemWhereInput
+}
+
 
 export type TodoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -511,6 +626,8 @@ export type TodoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  checkList?: boolean | Prisma.Todo$checkListArgs<ExtArgs>
+  _count?: boolean | Prisma.TodoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo"]>
 
 export type TodoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -548,6 +665,8 @@ export type TodoSelectScalar = {
 export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "text" | "complete" | "deadline" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["todo"]>
 export type TodoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  checkList?: boolean | Prisma.Todo$checkListArgs<ExtArgs>
+  _count?: boolean | Prisma.TodoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TodoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -560,6 +679,7 @@ export type $TodoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Todo"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    checkList: Prisma.$ChecklistItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -964,6 +1084,7 @@ readonly fields: TodoFieldRefs;
 export interface Prisma__TodoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  checkList<T extends Prisma.Todo$checkListArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Todo$checkListArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1393,6 +1514,30 @@ export type TodoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Todos to delete.
    */
   limit?: number
+}
+
+/**
+ * Todo.checkList
+ */
+export type Todo$checkListArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChecklistItem
+   */
+  select?: Prisma.ChecklistItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChecklistItem
+   */
+  omit?: Prisma.ChecklistItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChecklistItemInclude<ExtArgs> | null
+  where?: Prisma.ChecklistItemWhereInput
+  orderBy?: Prisma.ChecklistItemOrderByWithRelationInput | Prisma.ChecklistItemOrderByWithRelationInput[]
+  cursor?: Prisma.ChecklistItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChecklistItemScalarFieldEnum | Prisma.ChecklistItemScalarFieldEnum[]
 }
 
 /**

@@ -5,9 +5,12 @@ import { toastMessageHandler } from "@/lib/toast/toastMessageHandler"
 import { useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
 import { useIsAuth } from "@/clientStore/isAuth"
+import type { Dispatch, SetStateAction } from "react"
 
 
-export const useLoginMutation = () => {
+export const useLoginMutation = (
+    setIsShowTwoFactor: Dispatch<SetStateAction<boolean>>
+) => {
     const navigate = useNavigate()
 
     const { mutate: login, isPending: isLoadingLogin } = useMutation({
@@ -15,11 +18,13 @@ export const useLoginMutation = () => {
         mutationFn: (values: TypeLoginSchema) => authService.login(values),
 
         onSuccess: (data: any) => {
-            console.log(data)
             if (data.user) {
                 toast.success('successfull authorization')
                 useIsAuth.setState(() => ({ isAuth: true }))
                 navigate({ to: '/todo' })
+            } else {
+                toastMessageHandler(data.message)
+                setIsShowTwoFactor(true)
             }
         },
         onError: (error: any) => {

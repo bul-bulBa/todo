@@ -52,3 +52,8 @@ export type Token = Prisma.TokenModel
  * 
  */
 export type Todo = Prisma.TodoModel
+/**
+ * Model ChecklistItem
+ * 
+ */
+export type ChecklistItem = Prisma.ChecklistItemModel

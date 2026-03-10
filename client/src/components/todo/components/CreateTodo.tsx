@@ -3,11 +3,31 @@ import { Textarea } from "@/components/ui/textarea"
 import { useRef } from "react"
 import { useCreateMutation } from "../hooks/useCreateMutation"
 import { DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useFieldArray, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { todoSchema, type TypeTodoSchema } from "../schemas/todo.schema"
+import type { Todo } from "../types/todoType"
+import CheckList from "./CheckList"
 
 const CreateTodo = () => {
-    const text = useRef('')
+
+    const { control, register, handleSubmit } = useForm<TypeTodoSchema>({
+        resolver: zodResolver(todoSchema),
+        defaultValues: {
+            text: '',
+            deadline: undefined,
+            checkList: []
+        }
+    })
 
     const { createTodo, isPendingTodo } = useCreateMutation()
+
+    const onSubmit = (values: TypeTodoSchema) => {
+        const checkList = values.checkList?.map(((item, index) => ({
+            ...item, order: index
+        }))) ?? undefined
+        createTodo({...values, checkList})
+    }
 
     return (
         <div className="">
@@ -15,12 +35,18 @@ const CreateTodo = () => {
                 <DialogHeader>
                     <DialogTitle>Create new todo</DialogTitle>
                 </DialogHeader>
-                {/* {isPendingTodo && <div>...loading</div>} */}
-                <Textarea placeholder="Type your todo here"
-                    onChange={(e) => text.current = e.target.value} />
-                <DialogClose>
-                    <Button onClick={() => createTodo(text.current)}>Create</Button>
-                </DialogClose>
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Textarea placeholder="Type your todo here"
+                        {...register('text')} />
+
+                    <CheckList control={control} register={register} />
+
+                    <DialogClose>
+                        <Button type="submit">Create</Button>
+                    </DialogClose>
+                </form>
+
             </DialogContent>
         </div>
     )

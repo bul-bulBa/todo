@@ -13,9 +13,7 @@ export const useEmailConfirmationMutation = () => {
         mutationFn: (token: string) => 
             authService.confirmVerification(token),
 
-        onSuccess: (data: any) => {
-            console.log(data)
-            toastMessageHandler(data.message)
+        onSuccess: () => {
             navigate({to: '/todo'})
         },
         onError: (error: any) => {

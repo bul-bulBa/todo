@@ -1,5 +1,10 @@
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
+interface CheckListItem {
+    text: string
+    order: number,
+    completed: boolean
+}
 
 export class PatchTodoDto {
 
@@ -17,4 +22,7 @@ export class PatchTodoDto {
     @IsOptional()
     @IsString()
     text: string
+
+    @IsOptional()
+    checkList: CheckListItem[]
 }

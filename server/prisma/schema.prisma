@@ -73,16 +73,28 @@ model Todo {
   id String @id @default(uuid())
 
   text     String
-  complete Boolean @default(false)
+  complete Boolean   @default(false)
   deadline DateTime?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("userId")
+  userId String @map("user_id")
+
+  checkList ChecklistItem[]
 
   @@map("todos")
+}
+
+model ChecklistItem {
+  id        String  @id @default(uuid())
+  text      String
+  completed Boolean @default(false)
+  order Int
+
+  todoId String @map("todo_id")
+  todo   Todo   @relation(fields: [todoId], references: [id], onDelete: Cascade)
 }
 
 enum AuthMethod {

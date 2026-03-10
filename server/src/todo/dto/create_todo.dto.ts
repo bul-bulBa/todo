@@ -1,5 +1,10 @@
 import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
+interface CheckListItem {
+    text: string,
+    order: number
+}
+
 export class createTodoDto{
     
     @IsString({ message: 'text must be a string'})
@@ -9,4 +14,7 @@ export class createTodoDto{
     @IsOptional()
     @IsDate()
     deadline: Date
+
+    @IsOptional()
+    checkList: CheckListItem[]
 }

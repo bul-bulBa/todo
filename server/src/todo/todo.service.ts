@@ -2,26 +2,42 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { createTodoDto } from './dto/create_todo.dto';
 import { PatchTodoDto } from './dto/patch_todo.dto';
+import { iif } from 'rxjs';
 
 @Injectable()
 export class TodoService {
-    constructor( private readonly prismaService: PrismaService ) {}
+    constructor(private readonly prismaService: PrismaService) { }
 
     async get(userId: string) {
 
         const todos = await this.prismaService.todo.findMany({
-            where: { userId }
+            where: { userId },
+            include: {
+                checkList: {
+                    orderBy: { order: 'asc' }
+                }
+            }
         })
 
         return todos
     }
 
     async create(userId: string, dto: createTodoDto) {
+        console.log('CREATE', dto)
         const todo = await this.prismaService.todo.create({
             data: {
                 text: dto.text,
                 deadline: dto.deadline ?? undefined,
-                userId
+                userId,
+                checkList: {
+                    create: dto.checkList.map(i => ({
+                        text: i.text,
+                        order: i.order
+                    }))
+                }
+            },
+            include: {
+                checkList: true
             }
         })
 
@@ -35,6 +51,17 @@ export class TodoService {
                 text: dto.text ?? undefined,
                 complete: dto.complete ?? undefined,
                 deadline: dto.deadline ?? undefined,
+                checkList: {
+                    deleteMany: {},
+                    create: dto.checkList?.map(i => ({
+                        text: i.text ?? undefined,
+                        order: i.order ?? undefined,
+                        completed: i.completed ?? undefined
+                    }))
+                }
+            },
+            include: {
+                checkList: true
             }
         })
 
@@ -45,12 +72,12 @@ export class TodoService {
         const existingTodo = await this.prismaService.todo.findFirst({
             where: { id }
         })
-        if(!existingTodo) throw new BadRequestException('Todo is not defined')
+        if (!existingTodo) throw new BadRequestException('Todo is not defined')
 
         await this.prismaService.todo.delete({
             where: { id }
         })
-        
+
         return { message: true }
     }
 }
