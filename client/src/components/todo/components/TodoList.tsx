@@ -7,7 +7,6 @@ const TodoList = () => {
 
     const { todos, isTodoLoading } = useTodoQuery()
 
-    console.log(todos)
     if (todos?.length < 1) return <div>You haven't todos</div>
     return (
         <div className="flex flex-col items-center w-screen">

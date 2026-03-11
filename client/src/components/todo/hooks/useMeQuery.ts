@@ -8,7 +8,5 @@ export const useMeQuery = () => {
         queryFn: () => todoService.getMe(),
     })
 
-    console.log('DATA', me)
-
     return {me, isLoadingMe}
 }

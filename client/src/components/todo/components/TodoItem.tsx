@@ -44,7 +44,7 @@ const TodoItem = ({ todo }: Props) => {
 
             <div className="row-start-2 px-10">
                 {todo.checkList?.map((c, i) => (
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3" key={c.text}>
                         {c.completed
                             ? <SquareCheckBig onClick={() => check(false, i)} />
                             : <Square onClick={() => check(true, i)} />}

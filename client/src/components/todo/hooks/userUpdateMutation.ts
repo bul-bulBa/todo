@@ -9,7 +9,6 @@ export const useUpdateMutation = () => {
         mutationKey: ['update_mutation'],
         mutationFn: todoService.update,
         onSuccess(todo: Todo) {
-            console.log('DTO', todo)
             queryClient.setQueryData<Todo[]>(['todo-query'],
                 (old = []) => old.map(t => t.id === todo.id ? todo : t)) || []
         }

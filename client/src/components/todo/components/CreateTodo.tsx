@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { todoSchema, type TypeTodoSchema } from "../schemas/todo.schema"
 import type { Todo } from "../types/todoType"
 import CheckList from "./CheckList"
+import { addOrder } from "../functions/addOrder"
 
 const CreateTodo = () => {
 
@@ -23,9 +24,7 @@ const CreateTodo = () => {
     const { createTodo, isPendingTodo } = useCreateMutation()
 
     const onSubmit = (values: TypeTodoSchema) => {
-        const checkList = values.checkList?.map(((item, index) => ({
-            ...item, order: index
-        }))) ?? undefined
+        const checkList = addOrder(values.checkList)
         createTodo({...values, checkList})
     }
 

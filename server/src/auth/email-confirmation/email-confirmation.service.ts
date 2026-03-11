@@ -61,7 +61,6 @@ export class EmailConfirmationService {
         const verificationToken = await this.generateVerificationToken(email)
 
         this.mailService.sendConfirmationEmail(verificationToken.email, verificationToken.token)
-        console.log('TOKEN', verificationToken.token)
         return true
     }
 

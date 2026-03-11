@@ -11,7 +11,7 @@ export type TypeCheckListItemSchema = z.infer<typeof checkListItemSchema>
 export const todoSchema = z.object({
     text: z.string(),
     complete: z.optional(z.boolean()),
-    deadline: z.optional(z.date()),
+    deadline: z.date().optional().nullable(),
     checkList: z.array(checkListItemSchema)
 })
 

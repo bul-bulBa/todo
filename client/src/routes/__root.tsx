@@ -22,16 +22,4 @@ const RootLayout = () => (
 
 export const Route = createRootRoute({
     component: RootLayout,
-    // beforeLoad: ({ location }) => {
-    //     const { isAuth } = useIsAuth.getState()
-    //     const IsAuthPath = location.pathname.includes('/auth/')
-
-    //     console.log(isAuth)
-
-    //     // if(IsAuthPath && isAuth) return redirect({to: '/todo'})
-
-    //     // if(!isAuth && !IsAuthPath) return redirect({ to: '/auth/register'})
-
-    //     return null
-    // }
 })
