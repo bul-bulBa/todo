@@ -11,6 +11,9 @@ class AuthService {
 
     confirmVerification = (token: string) => 
         api.post('/auth/email-confirmation', { token }).then(res => res.data)
+
+    oauthByProvider = (provider: string) => 
+        api.get(`/auth/oauth/connect/${provider}`).then(res => res.data)
 }
 
 export const authService = new AuthService

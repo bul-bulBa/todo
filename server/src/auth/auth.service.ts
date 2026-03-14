@@ -10,6 +10,7 @@ import { TokenService } from './token/token.service';
 import { Response, type Request } from 'express';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 import { TwoFactorService } from './two-factor/two-factor.service';
+import { ProviderService } from './provider/provider.service';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,8 @@ export class AuthService {
         private readonly config: ConfigService,
         private readonly tokenService: TokenService,
         private readonly emailConfirmationService: EmailConfirmationService,
-        private readonly twoFactorService: TwoFactorService
+        private readonly twoFactorService: TwoFactorService,
+        private readonly providerService: ProviderService
     ) { }
 
     async register(dto: RegisterDto, req: Request) {
@@ -92,5 +94,48 @@ export class AuthService {
         const tokens = await this.tokenService.generateTokens(userId, req)
 
         return { tokens, message: true }
+    }
+
+    async extractProfileFromCode(
+        req: Request, 
+        provider: string, 
+        code: string
+    ) {
+        const providerInstance = this.providerService.findByService(provider)
+        const profile = await providerInstance?.findUserByCode(code)
+        if(!profile) throw new BadRequestException()
+
+        const account = await this.prismaService.account.findFirst({
+            where: {
+                id: profile.id,
+                provider: profile.provider
+            }
+        })
+
+        let user
+        if(account?.userId) user = await this.userService.findById(account.userId)
+        else user = await this.userService.findByEmail(profile.email)
+
+        if(user) return await this.tokenService.generateTokens(user.id, req)
+
+        user = await this.userService.create(
+            profile.email,
+            '',
+            AuthMethod[profile.provider.toUpperCase()],
+            true
+        )
+
+        if(!account) await this.prismaService.account.create({
+            data: {
+                userId: user.id,
+                type: 'oauth',
+                provider: profile.provider, 
+                accessToken: profile.access_token,
+                refreshToken: profile.refresh_token,
+                expiresAt: profile.expires_at
+            }
+        })
+
+        return await this.tokenService.generateTokens(user.id, req)
     }
 }

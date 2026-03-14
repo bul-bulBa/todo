@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuthMethod } from 'prisma/generated/enums';
 import { PrismaService } from 'src/prisma/prisma.service';
 import bcrypt from 'bcrypt'
@@ -19,6 +19,7 @@ export class UserService {
     }
 
     async findByEmail(email: string) {
+        if(!email) throw new BadRequestException('email is undefined')
         const user = this.prismaService.user.findUnique({
             where: { email },
             // include: { accounts: true }

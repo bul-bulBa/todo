@@ -451,10 +451,6 @@ export type EnumTokenTypeFieldUpdateOperationsInput = {
   set?: $Enums.TokenType
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type TokenCreateWithoutUserInput = {
   id?: string
   email: string

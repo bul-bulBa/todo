@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../ui/card"
 import { Button } from "../../ui/button"
 import type { PropsWithChildren } from "react"
+import AuthSocial from "./AuthSocial"
 
 type AuthWrapperProps = {
     heading: string,
@@ -30,7 +31,7 @@ const AuthWrapper = ({
             </CardHeader>
 
             <CardContent>
-                {/* {isShowSocial && <AuthSocial />} */}
+                {isShowSocial && <AuthSocial />}
                 {children}
             </CardContent>
 
