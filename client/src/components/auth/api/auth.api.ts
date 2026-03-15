@@ -14,6 +14,12 @@ class AuthService {
 
     oauthByProvider = (provider: string) => 
         api.get(`/auth/oauth/connect/${provider}`).then(res => res.data)
+
+    resetPassword = (email: string) => 
+        api.post('/auth/reset-password/reset', { email }).then(res => res.data)
+
+    newPassword = (password: string, token: string): Promise<boolean> => 
+        api.post(`/auth/reset-password/new/${token}`, { password }).then(res => res.data)
 }
 
 export const authService = new AuthService

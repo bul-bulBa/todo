@@ -8,6 +8,7 @@ import { TwoFactorModule } from './two-factor/two-factor.module';
 import { ProviderModule } from './provider/provider.module';
 import { getProvidersConfig } from 'src/config/providers.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
 
 @Module({
   imports: [TokenModule, EmailConfirmationModule, TwoFactorModule, 
@@ -17,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       ],
       useFactory: getProvidersConfig,
       inject: [ConfigService]
-    })],
+    }), ResetPasswordModule],
   controllers: [AuthController],
   providers: [AuthService, UserService],
   exports: [AuthService],

@@ -12,6 +12,7 @@ import { Switch } from "radix-ui"
 import { Button } from "@/components/ui/button"
 import { useLoginMutation } from "../hooks/useLoginMutation"
 import { LoginSchema, type TypeLoginSchema } from "../schemas/login.schema"
+import { Link } from "@tanstack/react-router"
 
 const LoginForm = () => {
     // const { theme } = useTheme()
@@ -66,7 +67,15 @@ const LoginForm = () => {
                                 placeholder="example@gmail.com" />
                         </Field>
                         <Field>
-                            <FieldLabel htmlFor="password">Password</FieldLabel>
+                            <div className="flex items-center justify-between">
+                                <FieldLabel htmlFor="password">Password</FieldLabel>
+
+                                <Link 
+                                to='/auth/reset-password'
+                                className="ml-auto inline-block text-sm underline">
+                                    Forgot password?
+                                </Link>
+                            </div>
                             <Input
                                 disabled={isLoadingLogin}
                                 {...form.register('password')}

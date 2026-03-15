@@ -18,7 +18,7 @@ const AuthWrapper = ({
     description,
     backButtonLabel,
     backButtonHref,
-    isShowSocial = true
+    isShowSocial = false
 }: PropsWithChildren<AuthWrapperProps>) => {
 
     return (

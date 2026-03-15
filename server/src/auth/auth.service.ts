@@ -46,7 +46,7 @@ export class AuthService {
         const user = await this.userService.findByEmail(dto.email)
         if (!user) throw new NotFoundException('This user is not exist')
 
-        const passwordConstraights = bcrypt.compare(dto.password, user.password)
+        const passwordConstraights = await bcrypt.compare(dto.password, user.password)
         if (!passwordConstraights) throw new BadRequestException('Incorrect email or password, please check entered data')
 
         if (!user.isVerified) {

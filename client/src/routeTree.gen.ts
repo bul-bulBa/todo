@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TodoIndexRouteImport } from './routes/todo/index'
+import { Route as AuthResetPasswordIndexRouteImport } from './routes/auth/reset-password/index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthNewVerificationIndexRouteImport } from './routes/auth/new-verification/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
+import { Route as AuthNewPasswordTokenRouteImport } from './routes/auth/new-password/$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const TodoIndexRoute = TodoIndexRouteImport.update({
   id: '/todo/',
   path: '/todo/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthResetPasswordIndexRoute = AuthResetPasswordIndexRouteImport.update({
+  id: '/auth/reset-password/',
+  path: '/auth/reset-password/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
@@ -41,59 +48,78 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthNewPasswordTokenRoute = AuthNewPasswordTokenRouteImport.update({
+  id: '/auth/new-password/$token',
+  path: '/auth/new-password/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/todo/': typeof TodoIndexRoute
+  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
+  '/auth/reset-password/': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/todo': typeof TodoIndexRoute
+  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/new-verification': typeof AuthNewVerificationIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
+  '/auth/reset-password': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/todo/': typeof TodoIndexRoute
+  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
+  '/auth/reset-password/': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/todo/'
+    | '/auth/new-password/$token'
     | '/auth/login/'
     | '/auth/new-verification/'
     | '/auth/register/'
+    | '/auth/reset-password/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/todo'
+    | '/auth/new-password/$token'
     | '/auth/login'
     | '/auth/new-verification'
     | '/auth/register'
+    | '/auth/reset-password'
   id:
     | '__root__'
     | '/'
     | '/todo/'
+    | '/auth/new-password/$token'
     | '/auth/login/'
     | '/auth/new-verification/'
     | '/auth/register/'
+    | '/auth/reset-password/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TodoIndexRoute: typeof TodoIndexRoute
+  AuthNewPasswordTokenRoute: typeof AuthNewPasswordTokenRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
   AuthNewVerificationIndexRoute: typeof AuthNewVerificationIndexRoute
   AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
+  AuthResetPasswordIndexRoute: typeof AuthResetPasswordIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -110,6 +136,13 @@ declare module '@tanstack/react-router' {
       path: '/todo'
       fullPath: '/todo/'
       preLoaderRoute: typeof TodoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/reset-password/': {
+      id: '/auth/reset-password/'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password/'
+      preLoaderRoute: typeof AuthResetPasswordIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register/': {
@@ -133,15 +166,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/new-password/$token': {
+      id: '/auth/new-password/$token'
+      path: '/auth/new-password/$token'
+      fullPath: '/auth/new-password/$token'
+      preLoaderRoute: typeof AuthNewPasswordTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TodoIndexRoute: TodoIndexRoute,
+  AuthNewPasswordTokenRoute: AuthNewPasswordTokenRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   AuthNewVerificationIndexRoute: AuthNewVerificationIndexRoute,
   AuthRegisterIndexRoute: AuthRegisterIndexRoute,
+  AuthResetPasswordIndexRoute: AuthResetPasswordIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
