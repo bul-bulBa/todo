@@ -9,6 +9,7 @@ import { Authorization } from './decorators/auth.decorator';
 import { ProviderService } from './provider/provider.service';
 import { AuthProviderGuard } from './guards/provider.guard';
 import { ConfigService } from '@nestjs/config';
+import { Recaptcha } from '@nestlab/google-recaptcha';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +19,7 @@ export class AuthController {
     private readonly configService: ConfigService
   ) { }
 
+  @Recaptcha()
   @HttpCode(HttpStatus.OK)
   @Post('register')
   async register(
@@ -27,6 +29,7 @@ export class AuthController {
     return this.authService.register(dto, req)
   }
 
+  @Recaptcha()
   @UseInterceptors(setCookieToken)
   @HttpCode(HttpStatus.OK)
   @Post('login')

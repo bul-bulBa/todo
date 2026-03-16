@@ -10,9 +10,9 @@ import { useRegisterMutation } from "../hooks/useRegisterMutation"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
 import { Switch } from "radix-ui"
 import { Button } from "@/components/ui/button"
+import ReCAPTCHA from "react-google-recaptcha"
 
 const RegisterForm = () => {
-    // const { theme } = useTheme()
     const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 
     const form = useForm<TypeRegisterSchema>({
@@ -27,9 +27,8 @@ const RegisterForm = () => {
     const { register, isLoadingRegister } = useRegisterMutation()
 
     const onSubmit = (values: TypeRegisterSchema) => {
-        // if (recaptchaValue) register({ values, recaptcha: recaptchaValue })
-        // else toast.error('Please, continue ReCaptcha')
-        register(values)
+        if (recaptchaValue) register({ values, recaptcha: recaptchaValue })
+        else toast.error('Please, continue ReCaptcha')
     }
 
     return (
@@ -67,6 +66,12 @@ const RegisterForm = () => {
                             placeholder="******" />
                     </Field>
                 </FieldGroup>
+
+                <div className="flex justify-center items-center">
+                    <ReCAPTCHA sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string}
+                        onChange={token => setRecaptchaValue(token)} />
+                </div>
+
                 <Button type='submit'>Sign up</Button>
             </form>
         </AuthWrapper>

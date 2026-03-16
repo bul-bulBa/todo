@@ -25,7 +25,7 @@ const TodoItem = ({ todo }: Props) => {
     }
 
     return (
-        <div className="grid grid-cols-3 grid-rows-2 p-3 border rounded-xl"
+        <div className="grid grid-cols-[40px_1fr_40px] grid-rows-[auto_auto] p-3 border rounded-xl"
             onContextMenu={(e) => {
                 e.preventDefault()
                 setTodo(todo.id, todo)
@@ -37,18 +37,27 @@ const TodoItem = ({ todo }: Props) => {
                 : <Circle onClick={() =>
                     update({ ...todo, complete: true, todoId: todo.id })} />}</div>
 
-            <div className={`${todo.complete ? 'line-through' : ''}`}>{todo.text}</div>
+            <div className={`${todo.complete ? 'line-through' : ''} break-words`}
+                style={{ overflowWrap: 'anywhere' }}>
+                {todo.text}
+            </div>
+
             <div className="flex justify-end row-start-1 col-start-3">
                 {isDeletePending ? <Spinner /> : <Delete onClick={() => deleteTodo(todo.id)} />}
             </div>
 
-            <div className="row-start-2 px-10">
+            <div className="row-start-2 col-start-2 pt-5 flex flex-col gap-2">
                 {todo.checkList?.map((c, i) => (
-                    <div className="grid grid-cols-2 gap-3" key={c.text}>
+                    <div className="flex gap-3" key={c.text}>
                         {c.completed
-                            ? <SquareCheckBig onClick={() => check(false, i)} />
-                            : <Square onClick={() => check(true, i)} />}
-                        <div className={`${c.completed ? 'line-through' : ''}`}>{c.text}</div>
+                            ? <SquareCheckBig className="flex-shrink-0" onClick={() => check(false, i)} />
+                            : <Square className="flex-shrink-0" onClick={() => check(true, i)} />}
+
+                        <div className={`${c.completed ? 'line-through' : ''} break-words`}
+                            style={{ overflowWrap: 'anywhere' }}>
+                            {c.text}
+                        </div>
+
                     </div>
                 ))}
             </div>

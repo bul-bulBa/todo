@@ -1,21 +1,17 @@
 import { useForm } from "react-hook-form"
 import AuthWrapper from "./AuthWrapper"
-import { RegisterSchema, type TypeRegisterSchema } from "../schemas/register.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../../ui/input"
-// import ReCAPTCHA from "react-google-recaptcha"
 import { useState } from "react"
-import { toast } from "sonner"
-import { useRegisterMutation } from "../hooks/useRegisterMutation"
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
-import { Switch } from "radix-ui"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { useLoginMutation } from "../hooks/useLoginMutation"
 import { LoginSchema, type TypeLoginSchema } from "../schemas/login.schema"
 import { Link } from "@tanstack/react-router"
+import ReCAPTCHA from 'react-google-recaptcha'
+import { toast } from "sonner"
 
 const LoginForm = () => {
-    // const { theme } = useTheme()
     const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
     const [isShowTwoFactor, setIsShowTwoFactor] = useState<boolean>(false)
     const form = useForm<TypeLoginSchema>({
@@ -29,9 +25,8 @@ const LoginForm = () => {
     const { login, isLoadingLogin } = useLoginMutation(setIsShowTwoFactor)
 
     const onSubmit = (values: TypeLoginSchema) => {
-        // if (recaptchaValue) register({ values, recaptcha: recaptchaValue })
-        // else toast.error('Please, continue ReCaptcha')
-        login(values)
+        if (recaptchaValue) login({ values, recaptcha: recaptchaValue })
+        else toast.error('Please, continue ReCaptcha')
     }
 
     return (
@@ -70,9 +65,9 @@ const LoginForm = () => {
                             <div className="flex items-center justify-between">
                                 <FieldLabel htmlFor="password">Password</FieldLabel>
 
-                                <Link 
-                                to='/auth/reset-password'
-                                className="ml-auto inline-block text-sm underline">
+                                <Link
+                                    to='/auth/reset-password'
+                                    className="ml-auto inline-block text-sm underline">
                                     Forgot password?
                                 </Link>
                             </div>
@@ -82,7 +77,13 @@ const LoginForm = () => {
                                 minLength={6}
                                 placeholder="******" />
                         </Field>
+
+                        <div className="flex justify-center items-center">
+                            <ReCAPTCHA sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string}
+                                onChange={token => setRecaptchaValue(token)} />
+                        </div>
                     </FieldGroup>
+
                 }
                 <Button type='submit'>Sign in</Button>
             </form>

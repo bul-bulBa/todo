@@ -9,7 +9,7 @@ const TodoList = () => {
 
     if (todos?.length < 1) return <div>You haven't todos</div>
     return (
-        <div className="flex flex-col items-center w-screen">
+        <div className="flex flex-col items-center">
             {isTodoLoading && <div>...Loading</div>}
             {todos?.map((t: Todo) => (
                 <div className="m-2 w-[95%]" key={t.id}>

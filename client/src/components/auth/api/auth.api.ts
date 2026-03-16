@@ -1,24 +1,31 @@
 import { api } from "@/lib/axios.config";
 import type { TypeRegisterSchema } from "../schemas/register.schema";
 import type { TypeLoginSchema } from "../schemas/login.schema";
+import type { TypeResetPasswordSchema } from "../schemas/reset-password.schema";
 
 class AuthService {
-    register = (body: TypeRegisterSchema, recaptcha?: string) => 
-        api.post('/auth/register', body).then(res => res.data)
+    register = (body: TypeRegisterSchema, recaptcha: string) =>
+        api.post('/auth/register', body,
+            { headers: { "recaptcha-token": recaptcha } })
+            .then(res => res.data)
 
-    login = (values: TypeLoginSchema) => 
-        api.post('/auth/login', values).then(res => res.data)
+    login = (body: TypeLoginSchema, recaptcha: string) =>
+        api.post('/auth/login', body,
+            { headers: { "recaptcha-token": recaptcha } })
+            .then(res => res.data)
 
-    confirmVerification = (token: string) => 
+    confirmVerification = (token: string) =>
         api.post('/auth/email-confirmation', { token }).then(res => res.data)
 
-    oauthByProvider = (provider: string) => 
+    oauthByProvider = (provider: string) =>
         api.get(`/auth/oauth/connect/${provider}`).then(res => res.data)
 
-    resetPassword = (email: string) => 
-        api.post('/auth/reset-password/reset', { email }).then(res => res.data)
+    resetPassword = (body: TypeResetPasswordSchema, recaptcha: string) =>
+        api.post('/auth/reset-password/reset', body,
+            { headers: { "recaptcha-token": recaptcha } })
+            .then(res => res.data)
 
-    newPassword = (password: string, token: string): Promise<boolean> => 
+    newPassword = (password: string, token: string): Promise<boolean> =>
         api.post(`/auth/reset-password/new/${token}`, { password }).then(res => res.data)
 }
 

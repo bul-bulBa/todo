@@ -11,14 +11,12 @@ const TodoPage = () => {
 
     return (
         <div className="relative w-full h-full">
-            <div className="absolute right-10 bottom-10">
+            <div className="fixed right-5 bottom-5">
                 <Dialog >
-                    <DialogTrigger>
-                        <Button>+</Button>
+                    <DialogTrigger asChild>
+                        <Button className="w-[35px] h-[35px]">+</Button>
                     </DialogTrigger>
-                    <DialogContent className='w-[80vw] flex justify-center items-center'>
-                        <CreateTodo />
-                    </DialogContent>
+                    <CreateTodo />
                 </Dialog>
             </div>
             <TodoList />

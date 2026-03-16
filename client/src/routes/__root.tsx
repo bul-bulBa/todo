@@ -9,14 +9,14 @@ import { useIsAuth } from '@/clientStore/isAuth'
 const RootLayout = () => (
     <>
         {/* <Header /> */}
-        <div className='h-screen w-screen'>
+        <div className='h-screen w-full'>
             {/* <Suspense fallback={<h1>Loading...</h1>}> */}
                 <Outlet />
             {/* </Suspense> */}
         </div>
         <ToastProvider />
-        <TanStackRouterDevtools position="bottom-left" />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <TanStackRouterDevtools position="bottom-left" /> */}
+        {/* <ReactQueryDevtools initialIsOpen={false} position='bottom-left' /> */}
     </>
 )
 

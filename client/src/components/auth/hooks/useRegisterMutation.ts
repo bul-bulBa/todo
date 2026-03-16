@@ -10,7 +10,10 @@ export const useRegisterMutation = () => {
     const { mutate: register, isPending: isLoadingRegister } = useMutation({
         mutationKey: ['register-user'],
 
-        mutationFn: (values: TypeRegisterSchema) => authService.register(values),
+        mutationFn: ({values, recaptcha}: {
+            values: TypeRegisterSchema,
+            recaptcha: string
+        }) => authService.register(values, recaptcha),
 
         onSuccess(data: any) {
             toastMessageHandler(data.message)

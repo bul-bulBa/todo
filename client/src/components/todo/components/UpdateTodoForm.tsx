@@ -32,8 +32,8 @@ const UpdateTodoForm = ({todo}: Props) => {
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Textarea placeholder="Type your todo here"
-                    {...register('text')} disabled={isUpdatePending} />
+                <Textarea className="break-words" style={{ overflowWrap: 'anywhere' }}
+                placeholder="Type your todo here" {...register('text')} disabled={isUpdatePending} />
                 <CheckList control={control} register={register} />
                 <Button type="submit" >Update</Button>
             </form>
