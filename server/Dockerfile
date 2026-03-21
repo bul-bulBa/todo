@@ -17,8 +17,8 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 COPY --from=build /app/package.json .
-RUN npm i --production --frozen-lockfile
+RUN npm ci --production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/generated ./prisma/generated
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
