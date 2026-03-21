@@ -21,4 +21,4 @@ RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/generated ./prisma/generated
 
-CMD ["node", "dist/src/main"]
+CMD npx prisma generate && npx prisma db push && node dist/src/main
