@@ -2,6 +2,7 @@ generator client {
   provider     = "prisma-client"
   output       = "./generated"
   moduleFormat = "cjs"
+  url          = env("POSTGRES_URI")
 }
 
 datasource db {
@@ -22,7 +23,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
 
-  todos Todo[]
+  todos    Todo[]
   accounts Account[]
 
   tokens Token[]
@@ -38,7 +39,7 @@ model Account {
 
   refreshToken String? @map("refresh_token")
   accessToken  String? @map("access_token")
-  expiresAt    Int?     @map("expires_at")
+  expiresAt    Int?    @map("expires_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -91,7 +92,7 @@ model ChecklistItem {
   id        String  @id @default(uuid())
   text      String
   completed Boolean @default(false)
-  order Int
+  order     Int
 
   todoId String @map("todo_id")
   todo   Todo   @relation(fields: [todoId], references: [id], onDelete: Cascade)

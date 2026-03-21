@@ -23,4 +23,4 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/prisma/generated ./prisma/generated
 
-CMD printenv && npx prisma db push && node dist/src/main
+CMD DATABASE_URL=$POSTGRES_URI npx prisma db push && node dist/src/main
