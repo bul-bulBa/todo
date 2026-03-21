@@ -23,4 +23,4 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/prisma/generated ./prisma/generated
 
-CMD npx prisma generate && npx prisma db push && node dist/src/main
+CMD printenv && npx prisma db push && node dist/src/main
