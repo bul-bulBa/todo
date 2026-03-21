@@ -16,8 +16,8 @@ FROM base AS production
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY --from=build /app/package.json .
-RUN npm ci --production
+COPY --from=build /app/package.json /app/package-lock.json ./
+RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma/generated ./prisma/generated
 
