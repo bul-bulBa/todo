@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /app/package.json /app/package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/prisma.config.ts ./
 COPY --from=build /app/prisma/generated ./prisma/generated
 
-CMD DATABASE_URL=$POSTGRES_URI npx prisma db push && node dist/src/main
+CMD npx prisma db push && node dist/src/main
