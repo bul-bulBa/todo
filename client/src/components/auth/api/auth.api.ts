@@ -6,12 +6,12 @@ import type { TypeResetPasswordSchema } from "../schemas/reset-password.schema";
 class AuthService {
     register = (body: TypeRegisterSchema, recaptcha: string) =>
         api.post('/auth/register', body,
-            { headers: { "recaptcha-token": recaptcha } })
+            { headers: { "recaptcha": recaptcha } })
             .then(res => res.data)
 
     login = (body: TypeLoginSchema, recaptcha: string) =>
         api.post('/auth/login', body,
-            { headers: { "recaptcha-token": recaptcha } })
+            { headers: { "recaptcha": recaptcha } })
             .then(res => res.data)
 
     confirmVerification = (token: string) =>
@@ -22,7 +22,7 @@ class AuthService {
 
     resetPassword = (body: TypeResetPasswordSchema, recaptcha: string) =>
         api.post('/auth/reset-password/reset', body,
-            { headers: { "recaptcha-token": recaptcha } })
+            { headers: { "recaptcha": recaptcha } })
             .then(res => res.data)
 
     newPassword = (password: string, token: string): Promise<boolean> =>
