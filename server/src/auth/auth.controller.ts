@@ -89,9 +89,9 @@ export class AuthController {
 
     // because I have redirect and can't return data, I do this shit
     res.cookie('accessToken', accessToken,
-      { maxAge: 30 * 60 * 1000, httpOnly: true })
+      { maxAge: 30 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
     res.cookie('refreshToken', refreshToken,
-      { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
 
     return res.redirect(`${this.configService.getOrThrow<string>('ALLOWED_ORIGIN')}/todo`)
   }

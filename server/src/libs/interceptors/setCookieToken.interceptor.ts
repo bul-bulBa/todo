@@ -12,11 +12,11 @@ export class setCookieToken implements NestInterceptor {
 
                 if (accessToken)
                     res.cookie('accessToken', data.tokens.accessToken,
-                        { maxAge: 30 * 60 * 1000, httpOnly: true })
+                        { maxAge: 30 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
 
                 if (refreshToken)
                     res.cookie('refreshToken', data.tokens.refreshToken,
-                        { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+                        { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
 
                 const { tokens, ...other } = data
                 return other
