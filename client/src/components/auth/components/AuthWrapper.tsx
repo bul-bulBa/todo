@@ -22,7 +22,7 @@ const AuthWrapper = ({
 }: PropsWithChildren<AuthWrapperProps>) => {
 
     return (
-         <Card className="w-[400px]">
+         <Card className="w-[80vw] sm:w-[400px]">
             <CardHeader className='space-y-2'>
                 <CardTitle>{heading}</CardTitle>
                 {description && (

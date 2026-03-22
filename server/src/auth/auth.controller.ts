@@ -10,6 +10,7 @@ import { ProviderService } from './provider/provider.service';
 import { AuthProviderGuard } from './guards/provider.guard';
 import { ConfigService } from '@nestjs/config';
 import { Recaptcha } from '@nestlab/google-recaptcha';
+import { IS_DEV_ENV } from 'src/libs/utils/is-dev.util';
 
 @Controller('auth')
 export class AuthController {
@@ -89,9 +90,9 @@ export class AuthController {
 
     // because I have redirect and can't return data, I do this shit
     res.cookie('accessToken', accessToken,
-      { maxAge: 30 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
+      { maxAge: 30 * 60 * 1000, httpOnly: true, secure: !IS_DEV_ENV, sameSite: 'lax' })
     res.cookie('refreshToken', refreshToken,
-      { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: 'lax', domain: '.gugugaga.work' })
+      { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: !IS_DEV_ENV, sameSite: 'lax' })
 
     return res.redirect(`${this.configService.getOrThrow<string>('ALLOWED_ORIGIN')}/todo`)
   }

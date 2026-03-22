@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import AuthWrapper from "./AuthWrapper"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../../ui/input"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { useLoginMutation } from "../hooks/useLoginMutation"
@@ -10,9 +10,12 @@ import { LoginSchema, type TypeLoginSchema } from "../schemas/login.schema"
 import { Link } from "@tanstack/react-router"
 import ReCAPTCHA from 'react-google-recaptcha'
 import { toast } from "sonner"
+import { useWindowSize } from '@uidotdev/usehooks'
+import { useRecaptchaSize } from "../hooks/useRecaptchaSize"
 
 const LoginForm = () => {
-    const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
+    const recaptchaRef = useRef<ReCAPTCHA>(null)
+
     const [isShowTwoFactor, setIsShowTwoFactor] = useState<boolean>(false)
     const form = useForm<TypeLoginSchema>({
         resolver: zodResolver(LoginSchema),
@@ -25,7 +28,11 @@ const LoginForm = () => {
     const { login, isLoadingLogin } = useLoginMutation(setIsShowTwoFactor)
 
     const onSubmit = (values: TypeLoginSchema) => {
-        if (recaptchaValue) login({ values, recaptcha: recaptchaValue })
+        const token = recaptchaRef.current?.getValue()
+        if (token) {
+            login({ values, recaptcha: token })
+            recaptchaRef.current?.reset()
+        }
         else toast.error('Please, continue ReCaptcha')
     }
 
@@ -79,8 +86,10 @@ const LoginForm = () => {
                         </Field>
 
                         <div className="flex justify-center items-center">
-                            <ReCAPTCHA sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string}
-                                onChange={token => setRecaptchaValue(token)} />
+                            {/* If the user rotates their phone, 
+                        the size will change, and the CAPTCHA will also resize */}
+                            <ReCAPTCHA ref={recaptchaRef} size={useRecaptchaSize()} key={useRecaptchaSize()}
+                                sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string} />
                         </div>
                     </FieldGroup>
 

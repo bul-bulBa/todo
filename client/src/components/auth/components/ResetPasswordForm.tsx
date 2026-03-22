@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import ReCAPTCHA from "react-google-recaptcha"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { toast } from "sonner"
+import { useRecaptchaSize } from "../hooks/useRecaptchaSize"
 
 export const ResetPasswordForm = () => {
-    const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
+    const recaptchaRef = useRef<ReCAPTCHA>(null)
 
     const form = useForm<TypeResetPasswordSchema>({
         resolver: zodResolver(ResetPasswordSchema),
@@ -23,7 +24,11 @@ export const ResetPasswordForm = () => {
     const { reset, isLoadingReset } = useResetPasswordMutation()
 
     const onSubmit = (values: TypeResetPasswordSchema) => {
-        if (recaptchaValue) reset({ values, recaptcha: recaptchaValue })
+        const token = recaptchaRef.current?.getValue()
+        if (token) {
+            reset({ values, recaptcha: token })
+            recaptchaRef.current?.reset()
+        }
         else toast.error('Please, continue ReCaptcha')
     }
 
@@ -48,8 +53,10 @@ export const ResetPasswordForm = () => {
                     </FieldGroup>
 
                     <div className="flex justify-center items-center">
-                        <ReCAPTCHA sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string}
-                            onChange={token => setRecaptchaValue(token)} />
+                        {/* If the user rotates their phone, 
+                        the size will change, and the CAPTCHA will also resize */}
+                        <ReCAPTCHA ref={recaptchaRef} size={useRecaptchaSize()} key={useRecaptchaSize()}
+                            sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string} />
                     </div>
 
                     <Button type='submit' disabled={isLoadingReset}>Reset</Button>

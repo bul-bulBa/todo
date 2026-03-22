@@ -4,16 +4,17 @@ import { RegisterSchema, type TypeRegisterSchema } from "../schemas/register.sch
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../../ui/input"
 // import ReCAPTCHA from "react-google-recaptcha"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { toast } from "sonner"
 import { useRegisterMutation } from "../hooks/useRegisterMutation"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
 import { Switch } from "radix-ui"
 import { Button } from "@/components/ui/button"
 import ReCAPTCHA from "react-google-recaptcha"
+import { useRecaptchaSize } from "../hooks/useRecaptchaSize"
 
 const RegisterForm = () => {
-    const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
+    const recaptchaRef = useRef<ReCAPTCHA>(null)
 
     const form = useForm<TypeRegisterSchema>({
         resolver: zodResolver(RegisterSchema),
@@ -27,7 +28,11 @@ const RegisterForm = () => {
     const { register, isLoadingRegister } = useRegisterMutation()
 
     const onSubmit = (values: TypeRegisterSchema) => {
-        if (recaptchaValue) register({ values, recaptcha: recaptchaValue })
+        const token = recaptchaRef.current?.getValue()
+        if (token) {
+            register({ values, recaptcha: token })
+            recaptchaRef.current?.reset()
+        }
         else toast.error('Please, continue ReCaptcha')
     }
 
@@ -68,8 +73,10 @@ const RegisterForm = () => {
                 </FieldGroup>
 
                 <div className="flex justify-center items-center">
-                    <ReCAPTCHA sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string}
-                        onChange={token => setRecaptchaValue(token)} />
+                    {/* If the user rotates their phone, 
+                        the size will change, and the CAPTCHA will also resize */}
+                    <ReCAPTCHA ref={recaptchaRef} size={useRecaptchaSize()} key={useRecaptchaSize()}
+                        sitekey={import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY as string} />
                 </div>
 
                 <Button type='submit'>Sign up</Button>

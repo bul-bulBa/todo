@@ -19,8 +19,7 @@ const UpdateTodo = () => {
     
     return (
         <Dialog defaultOpen onOpenChange={(open) => !open && unSetTodo()}>
-            <DialogContent showCloseButton={false} aria-describedby={undefined}
-                className="w-[80vw] flex flex-col justify-center items-center">
+            <DialogContent showCloseButton={false} aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle>Update todo</DialogTitle>
                 </DialogHeader>
