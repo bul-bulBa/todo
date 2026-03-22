@@ -8,7 +8,12 @@ export const useQueryOptions = queryOptions({
     queryKey: ['auth'],
     queryFn: async () => {
         const data = await todoService.getMe()
-        if (!data) throw toast.error('Unauthorized')
+        if(data) {
+            console.log(data)
+            useIsAuth.setState({ isAuth: true })
+        }
+        else throw toast.error('Unauthorized')
+
         return data
     },
     retry: false,

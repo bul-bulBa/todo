@@ -79,6 +79,8 @@ export class AuthService {
     async refresh(req: Request) {
         const oldRefreshToken = req.cookies['refreshToken']
         
+        if(!oldRefreshToken) throw new UnauthorizedException('Refresh token is undefined')
+
         const userId = await this.tokenService.refreshVerify(oldRefreshToken)
 
         const existingToken = await this.prismaService.token.findFirst({
