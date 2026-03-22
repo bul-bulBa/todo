@@ -24,7 +24,7 @@ export const useLoginMutation = (
             if (data.user) {
                 toast.success('successfull authorization')
                 useIsAuth.setState(() => ({ isAuth: true }))
-                navigate({ to: '/todo' })
+                navigate({ to: '/' })
             } else {
                 toastMessageHandler(data.message)
                 setIsShowTwoFactor(true)

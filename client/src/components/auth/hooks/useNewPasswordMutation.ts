@@ -3,7 +3,7 @@ import { authService } from "../api/auth.api"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { toast } from "sonner"
 import { toastMessageHandler } from "@/lib/toast/toastMessageHandler"
-import { Route } from '@/routes/auth/new-password/$token'
+import { Route } from '@/routes/_auth/new-password/$token'
 
 export const useNewPasswordMutation = () => {
     const navigate = useNavigate()
@@ -16,7 +16,7 @@ export const useNewPasswordMutation = () => {
             toast.success('Password successfully changed', {
                 description: 'Now you can login to your account'
             })
-            navigate({ to: '/auth/login' })
+            navigate({ to: '/login' })
         },
         onError(error) {
             toastMessageHandler(error)

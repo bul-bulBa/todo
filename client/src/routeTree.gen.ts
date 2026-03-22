@@ -9,121 +9,118 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TodoIndexRouteImport } from './routes/todo/index'
-import { Route as AuthResetPasswordIndexRouteImport } from './routes/auth/reset-password/index'
-import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
-import { Route as AuthNewVerificationIndexRouteImport } from './routes/auth/new-verification/index'
-import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
-import { Route as AuthNewPasswordTokenRouteImport } from './routes/auth/new-password/$token'
+import { Route as AuthResetPasswordIndexRouteImport } from './routes/_auth/reset-password/index'
+import { Route as AuthRegisterIndexRouteImport } from './routes/_auth/register/index'
+import { Route as AuthNewVerificationIndexRouteImport } from './routes/_auth/new-verification/index'
+import { Route as AuthLoginIndexRouteImport } from './routes/_auth/login/index'
+import { Route as AuthNewPasswordTokenRouteImport } from './routes/_auth/new-password/$token'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TodoIndexRoute = TodoIndexRouteImport.update({
-  id: '/todo/',
-  path: '/todo/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthResetPasswordIndexRoute = AuthResetPasswordIndexRouteImport.update({
-  id: '/auth/reset-password/',
-  path: '/auth/reset-password/',
-  getParentRoute: () => rootRouteImport,
+  id: '/reset-password/',
+  path: '/reset-password/',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
-  id: '/auth/register/',
-  path: '/auth/register/',
-  getParentRoute: () => rootRouteImport,
+  id: '/register/',
+  path: '/register/',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthNewVerificationIndexRoute =
   AuthNewVerificationIndexRouteImport.update({
-    id: '/auth/new-verification/',
-    path: '/auth/new-verification/',
-    getParentRoute: () => rootRouteImport,
+    id: '/new-verification/',
+    path: '/new-verification/',
+    getParentRoute: () => AuthRoute,
   } as any)
 const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
-  id: '/auth/login/',
-  path: '/auth/login/',
-  getParentRoute: () => rootRouteImport,
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthNewPasswordTokenRoute = AuthNewPasswordTokenRouteImport.update({
-  id: '/auth/new-password/$token',
-  path: '/auth/new-password/$token',
-  getParentRoute: () => rootRouteImport,
+  id: '/new-password/$token',
+  path: '/new-password/$token',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/todo/': typeof TodoIndexRoute
-  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
-  '/auth/login/': typeof AuthLoginIndexRoute
-  '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
-  '/auth/register/': typeof AuthRegisterIndexRoute
-  '/auth/reset-password/': typeof AuthResetPasswordIndexRoute
+  '/new-password/$token': typeof AuthNewPasswordTokenRoute
+  '/login/': typeof AuthLoginIndexRoute
+  '/new-verification/': typeof AuthNewVerificationIndexRoute
+  '/register/': typeof AuthRegisterIndexRoute
+  '/reset-password/': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/todo': typeof TodoIndexRoute
-  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
-  '/auth/login': typeof AuthLoginIndexRoute
-  '/auth/new-verification': typeof AuthNewVerificationIndexRoute
-  '/auth/register': typeof AuthRegisterIndexRoute
-  '/auth/reset-password': typeof AuthResetPasswordIndexRoute
+  '/new-password/$token': typeof AuthNewPasswordTokenRoute
+  '/login': typeof AuthLoginIndexRoute
+  '/new-verification': typeof AuthNewVerificationIndexRoute
+  '/register': typeof AuthRegisterIndexRoute
+  '/reset-password': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/todo/': typeof TodoIndexRoute
-  '/auth/new-password/$token': typeof AuthNewPasswordTokenRoute
-  '/auth/login/': typeof AuthLoginIndexRoute
-  '/auth/new-verification/': typeof AuthNewVerificationIndexRoute
-  '/auth/register/': typeof AuthRegisterIndexRoute
-  '/auth/reset-password/': typeof AuthResetPasswordIndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_auth/new-password/$token': typeof AuthNewPasswordTokenRoute
+  '/_auth/login/': typeof AuthLoginIndexRoute
+  '/_auth/new-verification/': typeof AuthNewVerificationIndexRoute
+  '/_auth/register/': typeof AuthRegisterIndexRoute
+  '/_auth/reset-password/': typeof AuthResetPasswordIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/todo/'
-    | '/auth/new-password/$token'
-    | '/auth/login/'
-    | '/auth/new-verification/'
-    | '/auth/register/'
-    | '/auth/reset-password/'
+    | '/new-password/$token'
+    | '/login/'
+    | '/new-verification/'
+    | '/register/'
+    | '/reset-password/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/todo'
-    | '/auth/new-password/$token'
-    | '/auth/login'
-    | '/auth/new-verification'
-    | '/auth/register'
-    | '/auth/reset-password'
+    | '/new-password/$token'
+    | '/login'
+    | '/new-verification'
+    | '/register'
+    | '/reset-password'
   id:
     | '__root__'
     | '/'
-    | '/todo/'
-    | '/auth/new-password/$token'
-    | '/auth/login/'
-    | '/auth/new-verification/'
-    | '/auth/register/'
-    | '/auth/reset-password/'
+    | '/_auth'
+    | '/_auth/new-password/$token'
+    | '/_auth/login/'
+    | '/_auth/new-verification/'
+    | '/_auth/register/'
+    | '/_auth/reset-password/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TodoIndexRoute: typeof TodoIndexRoute
-  AuthNewPasswordTokenRoute: typeof AuthNewPasswordTokenRoute
-  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
-  AuthNewVerificationIndexRoute: typeof AuthNewVerificationIndexRoute
-  AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
-  AuthResetPasswordIndexRoute: typeof AuthResetPasswordIndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -131,59 +128,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/todo/': {
-      id: '/todo/'
-      path: '/todo'
-      fullPath: '/todo/'
-      preLoaderRoute: typeof TodoIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/reset-password/': {
-      id: '/auth/reset-password/'
-      path: '/auth/reset-password'
-      fullPath: '/auth/reset-password/'
+    '/_auth/reset-password/': {
+      id: '/_auth/reset-password/'
+      path: '/reset-password'
+      fullPath: '/reset-password/'
       preLoaderRoute: typeof AuthResetPasswordIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/auth/register/': {
-      id: '/auth/register/'
-      path: '/auth/register'
-      fullPath: '/auth/register/'
+    '/_auth/register/': {
+      id: '/_auth/register/'
+      path: '/register'
+      fullPath: '/register/'
       preLoaderRoute: typeof AuthRegisterIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/auth/new-verification/': {
-      id: '/auth/new-verification/'
-      path: '/auth/new-verification'
-      fullPath: '/auth/new-verification/'
+    '/_auth/new-verification/': {
+      id: '/_auth/new-verification/'
+      path: '/new-verification'
+      fullPath: '/new-verification/'
       preLoaderRoute: typeof AuthNewVerificationIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/auth/login/': {
-      id: '/auth/login/'
-      path: '/auth/login'
-      fullPath: '/auth/login/'
+    '/_auth/login/': {
+      id: '/_auth/login/'
+      path: '/login'
+      fullPath: '/login/'
       preLoaderRoute: typeof AuthLoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/auth/new-password/$token': {
-      id: '/auth/new-password/$token'
-      path: '/auth/new-password/$token'
-      fullPath: '/auth/new-password/$token'
+    '/_auth/new-password/$token': {
+      id: '/_auth/new-password/$token'
+      path: '/new-password/$token'
+      fullPath: '/new-password/$token'
       preLoaderRoute: typeof AuthNewPasswordTokenRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  TodoIndexRoute: TodoIndexRoute,
+interface AuthRouteChildren {
+  AuthNewPasswordTokenRoute: typeof AuthNewPasswordTokenRoute
+  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+  AuthNewVerificationIndexRoute: typeof AuthNewVerificationIndexRoute
+  AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
+  AuthResetPasswordIndexRoute: typeof AuthResetPasswordIndexRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
   AuthNewPasswordTokenRoute: AuthNewPasswordTokenRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   AuthNewVerificationIndexRoute: AuthNewVerificationIndexRoute,
   AuthRegisterIndexRoute: AuthRegisterIndexRoute,
   AuthResetPasswordIndexRoute: AuthResetPasswordIndexRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

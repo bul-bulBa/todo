@@ -1,12 +1,16 @@
-import { useQuery } from "@tanstack/react-query"
+import { queryOptions, useQuery } from "@tanstack/react-query"
 import { todoService } from "../api/todo.api"
+import { useIsAuth } from "@/clientStore/isAuth"
+import { toast } from "sonner"
 
 
-export const useMeQuery = () => {
-    const {data: me, isLoading: isLoadingMe} = useQuery({
-        queryKey: ['query_me'],
-        queryFn: () => todoService.getMe(),
-    })
-
-    return {me, isLoadingMe}
-}
+export const useQueryOptions = queryOptions({
+    queryKey: ['auth'],
+    queryFn: async () => {
+        const data = await todoService.getMe()
+        if (!data) throw toast.error('Unauthorized')
+        return data
+    },
+    retry: false,
+    staleTime: Infinity,
+})

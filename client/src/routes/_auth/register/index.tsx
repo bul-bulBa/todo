@@ -1,9 +1,10 @@
 import RegisterForm from '@/components/auth/components/RegisterForm'
 import type { TypeRegisterSchema } from '@/components/auth/schemas/register.schema'
-import { createFileRoute } from '@tanstack/react-router'
+import { useQueryOptions } from '@/components/todo/hooks/useMeQuery'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import type React from 'react'
 
-export const Route = createFileRoute('/auth/register/')({
+export const Route = createFileRoute('/_auth/register/')({
   component: RouteComponent,
 })
 

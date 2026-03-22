@@ -2,7 +2,7 @@ import { useEmailConfirmationMutation } from '@/components/auth/hooks/useEmailCo
 import { createFileRoute, useSearch } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-export const Route = createFileRoute('/auth/new-verification/')({
+export const Route = createFileRoute('/_auth/new-verification/')({
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>) => {
     return {
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/auth/new-verification/')({
 
 function RouteComponent() {
   const token = useSearch({
-    from: '/auth/new-verification/',
+    from: '/_auth/new-verification/',
     select: (search) => search.token
   })
 

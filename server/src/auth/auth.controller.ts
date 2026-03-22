@@ -94,6 +94,6 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken,
       { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: !IS_DEV_ENV, sameSite: 'lax' })
 
-    return res.redirect(`${this.configService.getOrThrow<string>('ALLOWED_ORIGIN')}/todo`)
+    return res.redirect(`${this.configService.getOrThrow<string>('ALLOWED_ORIGIN')}/`)
   }
 }

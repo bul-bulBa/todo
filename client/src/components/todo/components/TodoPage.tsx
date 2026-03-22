@@ -1,13 +1,10 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { useMeQuery } from "../hooks/useMeQuery"
 import CreateTodo from "./CreateTodo"
 import TodoList from "./TodoList"
 import { Button } from "@/components/ui/button"
 import UpdateTodo from "./UpdateTodo"
 
 const TodoPage = () => {
-
-    const { me, isLoadingMe } = useMeQuery()
 
     return (
         <div className="relative w-full h-full">

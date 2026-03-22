@@ -5,11 +5,16 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Suspense } from 'react'
 import { ToastProvider } from '../lib/toast/toastMessageProvider'
 import { useIsAuth } from '@/clientStore/isAuth'
+import type { QueryClient } from '@tanstack/react-query'
+
+type MyRouterContext = {
+    queryClient: QueryClient
+}
 
 const RootLayout = () => (
     <>
         {/* <Header /> */}
-        <div className='h-screen w-full'>
+        <div className='h-dvh w-full'>
             {/* <Suspense fallback={<h1>Loading...</h1>}> */}
                 <Outlet />
             {/* </Suspense> */}
@@ -20,6 +25,6 @@ const RootLayout = () => (
     </>
 )
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<MyRouterContext>()({
     component: RootLayout,
 })

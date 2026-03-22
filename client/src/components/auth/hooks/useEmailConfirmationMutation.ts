@@ -14,11 +14,11 @@ export const useEmailConfirmationMutation = () => {
             authService.confirmVerification(token),
 
         onSuccess: () => {
-            navigate({to: '/todo'})
+            navigate({to: '/'})
         },
         onError: (error: any) => {
             toastMessageHandler(error)
-            navigate({to: '/auth/register'})
+            navigate({to: '/register'})
         }
     })
 

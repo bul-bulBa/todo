@@ -73,7 +73,7 @@ const LoginForm = () => {
                                 <FieldLabel htmlFor="password">Password</FieldLabel>
 
                                 <Link
-                                    to='/auth/reset-password'
+                                    to='/reset-password'
                                     className="ml-auto inline-block text-sm underline">
                                     Forgot password?
                                 </Link>
