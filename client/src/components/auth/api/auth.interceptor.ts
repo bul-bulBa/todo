@@ -32,7 +32,6 @@ api.interceptors.response.use(
         if (originalRequest._retry) return Promise.reject(error)
 
         if (originalRequest.url.includes('/auth/refresh')) {
-            useIsAuth.setState(() => ({ isAuth: false }))
             useIsAuth.setState({ isAuth: false })
             return Promise.reject(error)
         }

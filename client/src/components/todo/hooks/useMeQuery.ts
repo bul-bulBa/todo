@@ -7,14 +7,15 @@ import { toast } from "sonner"
 export const useQueryOptions = queryOptions({
     queryKey: ['auth'],
     queryFn: async () => {
-        const data = await todoService.getMe()
-        if(data) {
-            console.log(data)
-            useIsAuth.setState({ isAuth: true })
-        }
-        else throw toast.error('Unauthorized')
+        try {
+            const data = await todoService.getMe()
+            if (data) useIsAuth.setState({ isAuth: true, user: data })
 
-        return data
+            return data
+        } catch (e) {
+            useIsAuth.setState({ isAuth: false, user: null })
+            throw toast.error('Unauthorized')
+        }
     },
     retry: false,
     staleTime: Infinity,

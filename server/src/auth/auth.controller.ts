@@ -11,6 +11,7 @@ import { AuthProviderGuard } from './guards/provider.guard';
 import { ConfigService } from '@nestjs/config';
 import { Recaptcha } from '@nestlab/google-recaptcha';
 import { IS_DEV_ENV } from 'src/libs/utils/is-dev.util';
+import { UserDto } from './dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -64,7 +65,7 @@ export class AuthController {
     @Authorized('id') id: string,
     @Req() req
   ) {
-    return req.user.email
+    return new UserDto(req.user)
   }
 
   @Get('oauth/connect/:provider')

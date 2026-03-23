@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as ProtectedTodoRouteImport } from './routes/_protected/todo'
 import { Route as AuthResetPasswordIndexRouteImport } from './routes/_auth/reset-password/index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/_auth/register/index'
@@ -25,6 +26,11 @@ const AuthRoute = AuthRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedTodoRoute = ProtectedTodoRouteImport.update({
@@ -62,6 +68,7 @@ const AuthNewPasswordTokenRoute = AuthNewPasswordTokenRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/todo': typeof ProtectedTodoRoute
+  '/settings/': typeof SettingsIndexRoute
   '/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/login/': typeof AuthLoginIndexRoute
   '/new-verification/': typeof AuthNewVerificationIndexRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/todo': typeof ProtectedTodoRoute
+  '/settings': typeof SettingsIndexRoute
   '/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/login': typeof AuthLoginIndexRoute
   '/new-verification': typeof AuthNewVerificationIndexRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_protected/todo': typeof ProtectedTodoRoute
+  '/settings/': typeof SettingsIndexRoute
   '/_auth/new-password/$token': typeof AuthNewPasswordTokenRoute
   '/_auth/login/': typeof AuthLoginIndexRoute
   '/_auth/new-verification/': typeof AuthNewVerificationIndexRoute
@@ -93,6 +102,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/todo'
+    | '/settings/'
     | '/new-password/$token'
     | '/login/'
     | '/new-verification/'
@@ -102,6 +112,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/todo'
+    | '/settings'
     | '/new-password/$token'
     | '/login'
     | '/new-verification'
@@ -112,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/_protected/todo'
+    | '/settings/'
     | '/_auth/new-password/$token'
     | '/_auth/login/'
     | '/_auth/new-verification/'
@@ -123,6 +135,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   ProtectedTodoRoute: typeof ProtectedTodoRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -139,6 +152,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/todo': {
@@ -208,6 +228,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   ProtectedTodoRoute: ProtectedTodoRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

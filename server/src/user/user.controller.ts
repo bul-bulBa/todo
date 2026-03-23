@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Authorization } from 'src/auth/decorators/auth.decorator';
 import { Authorized } from 'src/auth/decorators/authorized.decorator';
 import { AuthMethod } from 'prisma/generated/enums';
+import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -25,4 +26,13 @@ export class UserController {
   //     dto.email, dto.password, dto.method, dto.isVerified
   //   )
   // }
+
+  @Put()
+  @Authorization()
+  async update(
+    @Body() dto: UpdateUserDto,
+    @Authorized() { id }
+  ) {
+    return this.userService.update(id, dto)
+  }
 }

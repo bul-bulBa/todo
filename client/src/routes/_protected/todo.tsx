@@ -8,9 +8,9 @@ export const Route = createFileRoute('/_protected/todo')({
   beforeLoad: async ({ context }) => {
     const isAuth = useIsAuth.getState().isAuth
 
-    if(!isAuth) throw redirect({ to: '/register'})
+    if (!isAuth) throw redirect({ to: '/register' })
 
-      await context.queryClient.ensureQueryData(useQueryOptions)
+    await context.queryClient.ensureQueryData(useQueryOptions)
   }
 })
 

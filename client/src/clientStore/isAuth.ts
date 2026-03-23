@@ -3,14 +3,16 @@ import { persist } from 'zustand/middleware'
 
 type IsAuth = {
     isAuth: boolean
-    setAuth: (value: boolean) => void
+    user: any | null,
+    setAuth: (isAuth: boolean, user: any) => void
 }
 
 export const useIsAuth = create<IsAuth>()(
     persist(
         (set) => ({
             isAuth: false,
-            setAuth: value => set({ isAuth: value }),
+            user: null,
+            setAuth: (isAuth, user) => set({ isAuth, user }),
         }),
         {
             name: 'isAuth'
