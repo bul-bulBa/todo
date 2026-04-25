@@ -82,6 +82,9 @@ export class baseOAuthService {
     }
 
     getRedirectUrl() {
+        if (!this.BASE_URL) {
+            throw new BadRequestException('BASE_URL is not set. Ensure APPLICATION_URL is configured.');
+        }
         return `${this.BASE_URL}/auth/oauth/callback/${this.options.name}`
     }
 

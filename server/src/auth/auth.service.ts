@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { UserService } from '@/user/user.service';
 import { RegisterDto } from './dto/register.dto';
-import { AuthMethod, TokenType } from 'prisma/generated/enums';
+import { AuthMethod, TokenType } from '@/../prisma/generated/enums';
 import { LoginDto } from './dto/login.dto';
 import bcrypt from 'bcrypt'
 import { TokenService } from './token/token.service';
@@ -78,8 +78,8 @@ export class AuthService {
 
     async refresh(req: Request) {
         const oldRefreshToken = req.cookies['refreshToken']
-        
-        if(!oldRefreshToken) throw new UnauthorizedException('Refresh token is undefined')
+
+        if (!oldRefreshToken) throw new UnauthorizedException('Refresh token is undefined')
 
         const userId = await this.tokenService.refreshVerify(oldRefreshToken)
 
@@ -99,26 +99,28 @@ export class AuthService {
     }
 
     async extractProfileFromCode(
-        req: Request, 
-        provider: string, 
+        req: Request,
+        provider: string,
         code: string
     ) {
         const providerInstance = this.providerService.findByService(provider)
         const profile = await providerInstance?.findUserByCode(code)
-        if(!profile) throw new BadRequestException()
+        if (!profile) throw new BadRequestException()
 
-        const account = await this.prismaService.account.findFirst({
+        const account = await this.prismaService.account.findUnique({
             where: {
-                id: profile.id,
-                provider: profile.provider
+                provider_sub: {
+                    sub: profile.id,
+                    provider: profile.provider
+                }
             }
         })
-
+        console.log('PROFILE', profile, 'ACCOUNT', account)
         let user
-        if(account?.userId) user = await this.userService.findById(account.userId)
+        if (account?.userId) user = await this.userService.findById(account.userId)
         else user = await this.userService.findByEmail(profile.email)
 
-        if(user) return await this.tokenService.generateTokens(user.id, req)
+        if (user) return await this.tokenService.generateTokens(user.id, req)
 
         user = await this.userService.create(
             profile.email,
@@ -127,11 +129,12 @@ export class AuthService {
             true
         )
 
-        if(!account) await this.prismaService.account.create({
+        if (!account) await this.prismaService.account.create({
             data: {
                 userId: user.id,
                 type: 'oauth',
-                provider: profile.provider, 
+                provider: profile.provider,
+                sub: profile.id,
                 accessToken: profile.access_token,
                 refreshToken: profile.refresh_token,
                 expiresAt: profile.expires_at

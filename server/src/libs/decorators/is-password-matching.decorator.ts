@@ -1,6 +1,6 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { argsArgArrayOrObject } from "rxjs/internal/util/argsArgArrayOrObject";
-import { RegisterDto } from "src/auth/dto/register.dto";
+import { RegisterDto } from "@/auth/dto/register.dto";
 
 
 @ValidatorConstraint({ name: 'IsPasswordMatching', async: false })

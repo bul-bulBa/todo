@@ -38,7 +38,7 @@ export const ResetPasswordForm = () => {
                 heading="Reset password"
                 description="To reset password, enter your email"
                 backButtonLabel="Login to account"
-                backButtonHref="/auth/login">
+                backButtonHref="/login">
                 <form onSubmit={form.handleSubmit(onSubmit)}
                     className="grid gap-2 space-y-2">
 

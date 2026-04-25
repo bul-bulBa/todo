@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, Req, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
-import { setCookieToken } from 'src/libs/interceptors/setCookieToken.interceptor';
+import { setCookieToken } from '@/libs/interceptors/setCookieToken.interceptor';
 import type { Response, Request } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { Authorized } from './decorators/authorized.decorator';
@@ -10,7 +10,7 @@ import { ProviderService } from './provider/provider.service';
 import { AuthProviderGuard } from './guards/provider.guard';
 import { ConfigService } from '@nestjs/config';
 import { Recaptcha } from '@nestlab/google-recaptcha';
-import { IS_DEV_ENV } from 'src/libs/utils/is-dev.util';
+import { IS_DEV_ENV } from '@/libs/utils/is-dev.util';
 import { UserDto } from './dto/user.dto';
 
 @Controller('auth')

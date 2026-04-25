@@ -23,4 +23,4 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/prisma.config.ts ./
 
-CMD npx prisma db push && node dist/src/main
+CMD npx prisma migrate deploy && node dist/src/main

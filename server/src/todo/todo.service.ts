@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 import { createTodoDto } from './dto/create_todo.dto';
 import { PatchTodoDto } from './dto/patch_todo.dto';
 import { iif } from 'rxjs';

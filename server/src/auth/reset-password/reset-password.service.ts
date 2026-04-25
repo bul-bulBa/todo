@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { MailService } from 'src/libs/mail/mail.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { MailService } from '@/libs/mail/mail.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { UserService } from '@/user/user.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { TokenType } from 'prisma/generated/enums';
+import { TokenType } from '@/../prisma/generated/enums';
 import { NewPasswordDto } from './dto/new-password.dto';
 import bcrypt from 'bcrypt'
 

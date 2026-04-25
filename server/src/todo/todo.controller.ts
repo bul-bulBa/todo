@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { Authorization } from 'src/auth/decorators/auth.decorator';
-import { Authorized } from 'src/auth/decorators/authorized.decorator';
+import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
 import { createTodoDto } from './dto/create_todo.dto';
 import { PatchTodoDto } from './dto/patch_todo.dto';
 

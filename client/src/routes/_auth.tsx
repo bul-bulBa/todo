@@ -1,19 +1,24 @@
-import { useQueryOptions } from '@/components/todo/hooks/useMeQuery'
-import { createFileRoute, isRedirect, Outlet, redirect } from '@tanstack/react-router'
+import { useAuth } from '@/lib/hooks/useAuth'
+import { createFileRoute, isRedirect, Outlet, redirect, useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_auth')({
-  component: () => <Outlet />,
-  beforeLoad: async ({ context }) => {
-    try {
-      const user = await context.queryClient.fetchQuery(useQueryOptions)
-      if (user) {
-        throw redirect({
-          to: '/',
-        })
-      }
-    } catch (e) {
-      if (isRedirect(e)) throw e
-      return
-    }
-  },
+  component: AuthLayout
 })
+
+
+function AuthLayout() {
+  const { data: user, isLoading } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Якщо завантаження завершено і користувач АВТОРИЗОВАНИЙ
+    if (!isLoading && user) {
+      navigate({ to: '/todo', replace: true })
+    }
+  }, [user, isLoading, navigate])
+
+  if (isLoading) return <p>Loading...</p>
+
+  return <Outlet /> // Рендеримо /login або /register
+}

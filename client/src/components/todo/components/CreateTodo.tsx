@@ -12,7 +12,7 @@ import { addOrder } from "../functions/addOrder"
 
 const CreateTodo = () => {
 
-    const { control, register, handleSubmit } = useForm<TypeTodoSchema>({
+    const { control, register, handleSubmit, reset } = useForm<TypeTodoSchema>({
         resolver: zodResolver(todoSchema),
         defaultValues: {
             text: '',
@@ -26,6 +26,7 @@ const CreateTodo = () => {
     const onSubmit = (values: TypeTodoSchema) => {
         const checkList = addOrder(values.checkList)
         createTodo({ ...values, checkList })
+        reset()
     }
 
     return (

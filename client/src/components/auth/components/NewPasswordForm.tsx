@@ -27,7 +27,7 @@ export const NewPasswordForm = () => {
             heading="New password"
             description="create a new password"
             backButtonLabel="Login to account"
-            backButtonHref="/auth/login">
+            backButtonHref="/login">
             <form onSubmit={form.handleSubmit(onSubmit)}
                 className="grid gap-2 space-y-2">
 

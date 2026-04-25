@@ -2,7 +2,7 @@ import { Body, Controller, Post, Req, UseGuards, UseInterceptors } from '@nestjs
 import { EmailConfirmationService } from './email-confirmation.service';
 import type { Request } from 'express';
 import { EmailConfirmationDto } from './dto/confirmation-email.dto';
-import { setCookieToken } from 'src/libs/interceptors/setCookieToken.interceptor';
+import { setCookieToken } from '@/libs/interceptors/setCookieToken.interceptor';
 
 @Controller('auth/email-confirmation')
 export class EmailConfirmationController {

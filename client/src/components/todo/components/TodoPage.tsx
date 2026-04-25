@@ -11,21 +11,21 @@ const TodoPage = () => {
     return (
         <div className="relative w-full h-full">
 
-            <div className="fixed right-5 bottom-20">
+            <div className="fixed right-5 bottom-5">
                 <Dialog >
                     <DialogTrigger asChild>
-                        <Button className="w-[35px] h-[35px]">+</Button>
+                        <Button className="w-[40px] h-[40px]">+</Button>
                     </DialogTrigger>
                     <CreateTodo />
                 </Dialog>
             </div>
-            <div className="fixed right-5 bottom-5">
-                <Button className="w-[45px] h-[45px]" variant='outline'>
+            {/* <div className="fixed right-20 bottom-5">
+                <Button className="w-[40px] h-[40px]" variant='outline'>
                     <Link to="/settings">
                         <Settings />
                     </Link>
                 </Button>
-            </div>
+            </div> */}
             <TodoList />
             <UpdateTodo />
         </div>

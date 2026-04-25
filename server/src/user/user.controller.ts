@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Authorization } from 'src/auth/decorators/auth.decorator';
-import { Authorized } from 'src/auth/decorators/authorized.decorator';
-import { AuthMethod } from 'prisma/generated/enums';
+import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
+import { AuthMethod } from '@/../prisma/generated/enums';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')

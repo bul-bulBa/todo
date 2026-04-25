@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MailService } from 'src/libs/mail/mail.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { MailService } from '@/libs/mail/mail.service';
+import { PrismaService } from '@/prisma/prisma.service';
 import { TokenService } from '../token/token.service';
-import { TokenType } from 'prisma/generated/enums';
-import { UserService } from 'src/user/user.service';
+import { TokenType } from '@/../prisma/generated/enums';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class TwoFactorService {

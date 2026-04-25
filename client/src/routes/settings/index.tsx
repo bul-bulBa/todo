@@ -8,7 +8,7 @@ export const Route = createFileRoute('/settings/')({
 function RouteComponent() {
   return (
     <div className='w-full h-full flex justify-center items-center'>
-      <SettingsPage />
+      {/* <SettingsPage /> */}
     </div>
   )
 }

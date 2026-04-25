@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoController } from './todo.controller';
-import { UserService } from 'src/user/user.service';
-import { TokenModule } from 'src/auth/token/token.module';
+import { UserService } from '@/user/user.service';
+import { TokenModule } from '@/auth/token/token.module';
 
 @Module({
   imports: [TokenModule],

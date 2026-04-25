@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { TokenType } from 'prisma/generated/enums';
-import { MailService } from 'src/libs/mail/mail.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { TokenType } from '@/../prisma/generated/enums';
+import { MailService } from '@/libs/mail/mail.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { UserService } from '@/user/user.service';
 import { v4 as uuidV4 } from 'uuid'
 import { EmailConfirmationDto } from './dto/confirmation-email.dto';
 import { TokenService } from '../token/token.service';
@@ -44,7 +44,7 @@ export class EmailConfirmationService {
             await this.prismaService.token.delete({
                 where: { id: existingToken.id }
             })
-        } catch (error) {
+        } catch (error: any) {
             if (error.code === 'P2025') {
                 // ignore
             } else {

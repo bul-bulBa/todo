@@ -41,7 +41,7 @@ const LoginForm = () => {
             heading="Login"
             description="To sign on site you must enter your email and password"
             backButtonLabel="Don't have an account?"
-            backButtonHref="/auth/register"
+            backButtonHref="/register"
             isShowSocial>
             <form onSubmit={form.handleSubmit(onSubmit)}
                 className="grid gap-2 space-y-2">

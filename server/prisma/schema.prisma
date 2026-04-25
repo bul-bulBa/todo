@@ -36,6 +36,7 @@ model Account {
 
   type     String
   provider String
+  sub      String
 
   refreshToken String? @map("refresh_token")
   accessToken  String? @map("access_token")
@@ -47,6 +48,7 @@ model Account {
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @map("user_id")
 
+  @@unique([provider, sub])
   @@map("accounts")
 }
 

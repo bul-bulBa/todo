@@ -6,7 +6,7 @@ type Props = {
 }
 
 export function ConfirmationTemplate( {domain, token}: Props ) {
-    const confirmLink = `${domain}/auth/new-verification?token=${token}`
+    const confirmLink = `${domain}/new-verification?token=${token}`
 
      return (
         <Tailwind>
